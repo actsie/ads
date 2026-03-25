@@ -283,6 +283,82 @@ Use system fonts only. thanks!
 
 ---
 
+## Spiral Staircase Photo Animation
+
+A top-down spiral where photos rise from the center (small, faded) and expand outward as they come toward the camera (large, clear). Loops infinitely. Good for opening scenes with real client photos.
+
+### How It Works
+
+Each tile has a `phase` (0 to 1) that determines its position along the spiral:
+- `phase = 0` — deep center, small, faded
+- `phase = 1` — close to camera, wide radius, bright, then fades out and loops
+
+The key insight: **convert `useCurrentFrame()` to milliseconds first**, then use the same math as a CSS animation timestamp. This makes the Remotion version identical to the HTML prototype.
+
+```tsx
+const timestamp = (frame / fps) * 1000;
+const phase = ((timestamp / CYCLE_DURATION_MS) + (i / COUNT)) % 1;
+```
+
+### Full Pattern
+
+```tsx
+const COUNT = 7;              // one per photo, no duplicates
+const CYCLE_DURATION_MS = 18000; // slow = 18s, fast = 8s
+const TOTAL_ROTATIONS = 1.5;  // how many times around the spiral
+const MAX_DEPTH = 700;
+const MIN_RADIUS = 10;        // tight at center
+const MAX_RADIUS = 320;       // wide at outer edge
+
+// Per tile:
+const angle = phase * TOTAL_ROTATIONS * 360;
+const radius = MIN_RADIUS + phase * (MAX_RADIUS - MIN_RADIUS);
+const zDepth = -MAX_DEPTH + phase * (MAX_DEPTH - 150); // stops before hitting camera
+
+// Opacity — smooth ease in, gradual brighten, fade out near top
+let opacity: number;
+if (phase < 0.4) opacity = Math.pow(phase / 0.4, 2) * 0.85;
+else if (phase > 0.78) opacity = (1 - phase) / 0.22;
+else opacity = 0.85 + ((phase - 0.4) / 0.38) * 0.15;
+
+// Transform
+tile.style.transform = `rotateZ(${angle}deg) translateX(${radius}px) translateZ(${zDepth}px)`;
+```
+
+### Container Setup (critical for 3D to work)
+
+```tsx
+// Outer — sets the camera
+<div style={{
+  perspective: 500,
+  perspectiveOrigin: "50% 30%",  // 30% = camera slightly above center
+  width: "100%", height: "100%",
+  display: "flex", alignItems: "center", justifyContent: "center",
+}}>
+  {/* Inner — the rotating stage */}
+  <div style={{
+    transformStyle: "preserve-3d",
+    position: "relative",
+    width: 0, height: 0,  // zero size so tiles position from true center
+  }}>
+    {tiles}
+  </div>
+</div>
+```
+
+### Tuning Guide
+- **Slower/faster** — change `CYCLE_DURATION_MS` (18000 = slow, 8000 = fast)
+- **Wider spiral** — increase `MAX_RADIUS`
+- **More rotations** — increase `TOTAL_ROTATIONS`
+- **Camera angle** — adjust `perspectiveOrigin` Y value (30% = slight top-down, 50% = flat side view, -80% = extreme top-down)
+- **Tile size** — 180x180px feels right for 1080x1080 canvas
+- **No duplicate photos** — set `COUNT` equal to number of photos
+
+### Building in HTML First
+Always prototype this in a plain HTML file before converting to Remotion. Use `requestAnimationFrame(timestamp)` in HTML — the math is identical, just swap `timestamp` for `(frame / fps) * 1000` in Remotion. Iterate visually in the browser (instant refresh) then port the final values over.
+
+---
+
 ## How to Iterate (Fixing Scenes)
 
 Always describe exactly what's wrong — don't say "fix it."

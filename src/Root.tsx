@@ -9,6 +9,7 @@ import { MellowCupScene1 } from "./MellowCupScene1";
 import { MellowCupScene2 } from "./MellowCupScene2";
 import { MellowCupScene4 } from "./MellowCupScene4";
 import { mellowCupSchema } from "./MellowCupSchema";
+import { SimonesScene1 } from "./SimonesScene1";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -58,8 +59,8 @@ export const RemotionRoot: React.FC = () => {
           hook: "Your Monday doesn't have to feel like a Monday.",
           productName: "New Matcha Latte",
           price: "1.50",
-          tagline: "Specialty coffee.",
-          neighborhood: "Your neighborhood.",
+          tagline: "moods brewed daily",
+          neighborhood: "Honey Street",
           accentColor: "#7bb661",
           productImage: "matcha.png",
           logoImage: "bubble1.png",
@@ -78,14 +79,14 @@ export const RemotionRoot: React.FC = () => {
           hook: "Your Monday doesn't have to feel like a Monday.",
           productName: "New Matcha Latte",
           price: "1.50",
-          tagline: "Specialty coffee.",
-          neighborhood: "Your neighborhood.",
+          tagline: "moods brewed daily",
+          neighborhood: "Honey Street",
           accentColor: "#7bb661",
           productImage: "matcha.png",
           logoImage: "bubble1.png",
         }}
       />
-<Composition
+      <Composition
         id="MellowCupScene4"
         component={MellowCupScene4}
         durationInFrames={155}
@@ -98,12 +99,20 @@ export const RemotionRoot: React.FC = () => {
           hook: "Your Monday doesn't have to feel like a Monday.",
           productName: "New Matcha Latte",
           price: "1.50",
-          tagline: "Specialty coffee.",
-          neighborhood: "Your neighborhood.",
+          tagline: "moods brewed daily",
+          neighborhood: "Honey Street",
           accentColor: "#7bb661",
           productImage: "matcha.png",
           logoImage: "bubble1.png",
         }}
+      />
+      <Composition
+        id="SimonesScene1"
+        component={SimonesScene1}
+        durationInFrames={180}
+        fps={30}
+        width={1080}
+        height={1080}
       />
     </>
   );
