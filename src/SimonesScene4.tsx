@@ -23,13 +23,13 @@ export const SimonesScene4: React.FC<SimonesProps> = ({ shopName }) => {
   });
 
   // Line 1 — "Simone's was top of mind..." (frame 20)
-  const line1Opacity = interpolate(frame, [15, 27], [0, 1], {
+  const line1Opacity = interpolate(frame, [2, 14], [0, 1], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
   const line1Y = spring({
-    frame: frame - 15,
+    frame: frame - 2,
     fps,
-    config: { stiffness: 200, damping: 22 },
+    config: { stiffness: 600, damping: 30 },
     from: 30,
     to: 0,
   });
@@ -150,7 +150,7 @@ export const SimonesScene4: React.FC<SimonesProps> = ({ shopName }) => {
             letterSpacing: "-0.02em",
             lineHeight: 1.3,
           }}>
-            Reply yes if you're interested.
+            Reply <span style={{ color: "#e0253a" }}>yes</span> if you're interested.
           </div>
           <div style={{
             fontSize: 22,

@@ -55,6 +55,16 @@ export const SimonesScene2: React.FC<SimonesProps> = () => {
   });
   const bridgeVisible = frame >= 150 && frame < 200;
 
+  // OMG emoji pops in after bridge text (frame 172)
+  const emojiScale = spring({
+    frame: frame - 172,
+    fps,
+    config: { stiffness: 500, damping: 18, overshootClamping: false },
+    from: 0,
+    to: 1,
+  });
+  const emojiVisible = frame >= 172 && frame < 200;
+
   // Spin stops when ARROW_STOP_INDEX item reaches front
   const totalSpin = -ARROW_STOP_INDEX * ITEM_ANGLE;
   const spinAngle = interpolate(frame, [20, SPIN_END], [0, totalSpin], {
@@ -187,7 +197,13 @@ export const SimonesScene2: React.FC<SimonesProps> = () => {
           letterSpacing: "-0.02em",
           lineHeight: 1.2,
         }}>
-          What if the answer<br />just showed up?
+          What if the answer<br />just showed up?{" "}
+          <span style={{
+            display: emojiVisible ? "inline-block" : "none",
+            transform: `scale(${emojiScale})`,
+            transformOrigin: "left center",
+            fontSize: 64,
+          }}>🫨</span>
         </div>
       </div>
     </AbsoluteFill>

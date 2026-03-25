@@ -124,7 +124,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
     easing: Easing.inOut(Easing.cubic),
   });
-  const cardSwipeUp = interpolate(frame, [330, 348], [0, -2400], {
+  const cardSwipeUp = interpolate(frame, [330, 340], [0, -2400], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
     easing: Easing.in(Easing.cubic),
   });
