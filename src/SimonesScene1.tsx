@@ -25,7 +25,7 @@ const CYCLE_DURATION_MS = 18000;
 const TOTAL_ROTATIONS = 1.5;
 const MAX_DEPTH = 700;
 const MIN_RADIUS = 10;
-const MAX_RADIUS = 320;
+const MAX_RADIUS = 480;
 
 export const SimonesScene1: React.FC = () => {
   const frame = useCurrentFrame();
@@ -34,8 +34,8 @@ export const SimonesScene1: React.FC = () => {
   // Convert frame to ms — same math as the HTML version
   const timestamp = (frame / fps) * 1000;
 
-  // Text fades in at frame 120
-  const textOpacity = interpolate(frame, [120, 150], [0, 1], {
+  // Text fades in at 1.5 seconds (frame 45)
+  const textOpacity = interpolate(frame, [45, 75], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -86,10 +86,10 @@ export const SimonesScene1: React.FC = () => {
               key={i}
               style={{
                 position: "absolute",
-                width: 180,
-                height: 180,
-                top: -90,
-                left: -90,
+                width: 240,
+                height: 240,
+                top: -120,
+                left: -120,
                 borderRadius: 12,
                 overflow: "hidden",
                 opacity,
