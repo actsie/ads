@@ -357,6 +357,96 @@ tile.style.transform = `rotateZ(${angle}deg) translateX(${radius}px) translateZ(
 ### Building in HTML First
 Always prototype this in a plain HTML file before converting to Remotion. Use `requestAnimationFrame(timestamp)` in HTML — the math is identical, just swap `timestamp` for `(frame / fps) * 1000` in Remotion. Iterate visually in the browser (instant refresh) then port the final values over.
 
+### Full Scene Template (copy and adapt)
+
+```tsx
+import React from "react";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig, Img, staticFile, interpolate, Easing } from "remotion";
+
+const FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+
+const PHOTOS = [
+  "SHOP_FOLDER/photo1.jpg",
+  "SHOP_FOLDER/photo2.jpg",
+  // one entry per photo, no duplicates — set COUNT to match
+];
+
+const COUNT = 7;              // match number of photos
+const CYCLE_DURATION_MS = 18000; // 18s = slow, 10s = medium, 8s = fast
+const TOTAL_ROTATIONS = 1.5;
+const MAX_DEPTH = 700;
+const MIN_RADIUS = 10;        // tail (center)
+const MAX_RADIUS = 480;       // head (outer edge) — increase for wider spiral
+
+export const SpiralScene: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const timestamp = (frame / fps) * 1000;
+
+  // Text fade in — adjust frame numbers for timing
+  const textOpacity = interpolate(frame, [18, 40], [0, 1], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  });
+
+  // Slide everything up and off screen — adjust start frame for timing
+  const slideUp = interpolate(frame, [96, 106], [0, -1200], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+    easing: Easing.in(Easing.cubic),
+  });
+
+  const tiles = Array.from({ length: COUNT }, (_, i) => {
+    const phase = ((timestamp / CYCLE_DURATION_MS) + i / COUNT) % 1;
+    const angle = phase * TOTAL_ROTATIONS * 360;
+    const radius = MIN_RADIUS + phase * (MAX_RADIUS - MIN_RADIUS);
+    const zDepth = -MAX_DEPTH + phase * (MAX_DEPTH - 150);
+    let opacity: number;
+    if (phase < 0.4) opacity = Math.pow(phase / 0.4, 2) * 0.85;
+    else if (phase > 0.78) opacity = (1 - phase) / 0.22;
+    else opacity = 0.85 + ((phase - 0.4) / 0.38) * 0.15;
+    return { i, angle, radius, zDepth, opacity, photo: PHOTOS[i] };
+  });
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: "#111111" }}>
+      <div style={{ width: "100%", height: "100%", transform: `translateY(${slideUp}px)` }}>
+        <div style={{ width: "100%", height: "100%", perspective: 500, perspectiveOrigin: "50% 30%",
+          display: "flex", alignItems: "center", justifyContent: "center", position: "relative" }}>
+          {/* Spiral */}
+          <div style={{ transformStyle: "preserve-3d", position: "relative", width: 0, height: 0 }}>
+            {tiles.map(({ i, angle, radius, zDepth, opacity, photo }) => (
+              <div key={i} style={{
+                position: "absolute", width: 240, height: 240, top: -120, left: -120,
+                borderRadius: 12, overflow: "hidden", opacity,
+                transform: `rotateZ(${angle}deg) translateX(${radius}px) translateZ(${zDepth}px)`,
+                boxShadow: "0 4px 24px rgba(0,0,0,0.6)",
+              }}>
+                <Img src={staticFile(photo)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              </div>
+            ))}
+          </div>
+          {/* Center text */}
+          <div style={{ position: "absolute", textAlign: "center", opacity: textOpacity, zIndex: 10 }}>
+            <div style={{ fontSize: 64, fontWeight: 900, color: "#ffffff", fontFamily: FONT,
+              letterSpacing: "-0.03em", lineHeight: 1.15,
+              textShadow: "0 0 40px rgba(0,0,0,1), 0 2px 12px rgba(0,0,0,0.9)" }}>
+              Your text here.
+            </div>
+          </div>
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+```
+
+**Knobs to adjust:**
+- `CYCLE_DURATION_MS` — speed of the spiral
+- `MAX_RADIUS` — how wide the head gets
+- `COUNT` + `PHOTOS` — always match, no duplicates
+- `perspectiveOrigin` Y — `30%` = slight top-down, `-80%` = extreme top-down
+- Text frame range `[18, 40]` — when text fades in
+- Slide frame range `[96, 106]` — when everything exits (10 frames = very fast)
+
 ---
 
 ## How to Iterate (Fixing Scenes)

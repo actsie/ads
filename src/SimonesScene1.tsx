@@ -6,6 +6,7 @@ import {
   Img,
   staticFile,
   interpolate,
+  Easing,
 } from "remotion";
 
 const FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
@@ -34,10 +35,17 @@ export const SimonesScene1: React.FC = () => {
   // Convert frame to ms — same math as the HTML version
   const timestamp = (frame / fps) * 1000;
 
-  // Text fades in at 1.5 seconds (frame 45)
-  const textOpacity = interpolate(frame, [45, 75], [0, 1], {
+  // Text fades in at 0.6 seconds (frame 18)
+  const textOpacity = interpolate(frame, [18, 40], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
+  });
+
+  // Everything slides up at 3.2 seconds (frame 96)
+  const slideUp = interpolate(frame, [96, 106], [0, -1200], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+    easing: Easing.in(Easing.cubic),
   });
 
   const tiles = Array.from({ length: COUNT }, (_, i) => {
@@ -59,6 +67,8 @@ export const SimonesScene1: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#111111" }}>
+      {/* Slide-up wrapper */}
+      <div style={{ width: "100%", height: "100%", transform: `translateY(${slideUp}px)` }}>
       {/* 3D perspective container */}
       <div
         style={{
@@ -130,6 +140,7 @@ export const SimonesScene1: React.FC = () => {
             into this.
           </div>
         </div>
+      </div>
       </div>
     </AbsoluteFill>
   );
