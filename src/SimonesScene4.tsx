@@ -101,14 +101,13 @@ export const SimonesScene4: React.FC<SimonesProps> = ({ shopName }) => {
           marginBottom: 32,
         }}>
           <div style={{
-            fontSize: 58,
+            fontSize: shopName.length > 12 ? 46 : 58,
             fontWeight: 800,
             color: "#111111",
             letterSpacing: "-0.03em",
             lineHeight: 1.2,
           }}>
-            {shopName} was top of mind
-            <br />when we started this.{" "}
+            {shopName} was top of mind<br />when we started this.{" "}
             <span style={{
               fontSize: 52,
               opacity: heartOpacity,

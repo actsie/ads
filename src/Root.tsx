@@ -113,6 +113,73 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
+        id="WitchsCottageVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "The Witch's Cottage",
+          photoFolder: "WITCHCOTTAGE",
+          photos: [
+            "476359942_122116785176681230_7052342118881319769_n.jpg",
+            "557743220_122148074936681230_314570420331584358_n.jpg",
+            "561566769_122148802358681230_2915470312944486006_n.jpg",
+            "562348204_17885296263381738_4358557765492544552_n.jpg",
+          ],
+          productPhoto: "pumpkinspicelatte.jpg",
+          suggestedSpecial: "Pumpkin Spice Latté",
+          draftPostCaption: "Something wicked this way brews 🎃🧙 Pumpkin Spice Latté and a Tequila Based Cocktail — pick your potion. Come in before they disappear.",
+        }}
+      />
+      <Composition
+        id="TradeCoffeeVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "The Trade",
+          photoFolder: "TRADECOFFEE",
+          photos: [
+            "trade1.png",
+            "trade2.png",
+            "trade3.png",
+          ],
+          productPhoto: "spicedorangelatte.png",
+          suggestedSpecial: "Spiced Orange Latte",
+          draftPostCaption: "Spice up your day ☕🍊 Our Spiced Orange Latte is warm, bright, and just the right kind of bold. Come get yours.",
+        }}
+      />
+      <Composition
+        id="MentalBarVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "The Mental Bar",
+          photoFolder: "MENTALBAR",
+          photos: [
+            "630116506_18303102907273663_2266682730110961936_n.jpg",
+            "631503558_18302617039273663_2275763246930327476_n.jpg",
+            "641665379_18305231629273663_5583976111123888365_n.jpg",
+            "641782131_18304655401273663_6297599026826235449_n.jpg",
+            "646158541_18305439064273663_5621118318309397307_n.jpg",
+            "651912908_18307060726273663_6960842075677662510_n.jpg",
+          ],
+          productPhoto: "gengerchaichill.jpg",
+          suggestedSpecial: "Ginger Chai Chill",
+          draftPostCaption: "A creamy, icy chai frappe blended with bold ginger for a perfectly spiced, refreshing sip.",
+        }}
+      />
+      <Composition
         id="SimonesVideo"
         component={SimonesVideo}
         durationInFrames={SIMONES_TOTAL_FRAMES}
