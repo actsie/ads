@@ -519,6 +519,326 @@ Merge scenes in iMovie after rendering.
 
 ---
 
+## 3D Drum Roller / Wheel Picker
+
+A vertical cylinder of text items that rotates to reveal each one. The focused item (at the arrow) is sharp and full opacity — all others are blurred and faded. An arrow nudges with a spring when each item comes into focus. Good for listing pain points, features, or options one at a time.
+
+### How It Works
+
+Items sit on a cylinder. Each item's angle determines its Y position (`sin`) and depth (`cos`). `cos` drives opacity, blur, and scale. A `spinAngle` drives by `interpolate` rotates the whole cylinder over time. The active item is whichever has `cos` closest to 1 (facing camera).
+
+```tsx
+const ITEM_ANGLE = 22;   // degrees between items — tighter = items closer together
+const RADIUS = 320;      // cylinder radius — bigger = more curve depth
+const CENTER_Y = 500;    // vertical center on 1080px canvas
+const CENTER_X = 160;    // horizontal position of text
+const SPIN_END = 160;    // frame when spin completes
+
+const totalSpin = -(N - 1) * ITEM_ANGLE;
+
+// Hold 20 frames at start, then spin with ease-out
+const spinAngle = interpolate(frame, [20, SPIN_END], [0, totalSpin], {
+  extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  easing: Easing.out(Easing.cubic),
+});
+
+// Active = item whose angle is closest to 0 (facing camera)
+const activeIndex = ITEMS.reduce((closest, _, i) => {
+  const angle = i * ITEM_ANGLE + spinAngle;
+  const closestAngle = closest * ITEM_ANGLE + spinAngle;
+  return Math.abs(angle) < Math.abs(closestAngle) ? i : closest;
+}, 0);
+
+// Frame at which each item hits the front
+const activeItemCenterFrame = ITEMS.map((_, i) =>
+  (-i * ITEM_ANGLE / totalSpin) * SPIN_END
+);
+```
+
+### Per-Item Rendering
+
+```tsx
+const angleRad = (i * ITEM_ANGLE + spinAngle) * (Math.PI / 180);
+const y = CENTER_Y + Math.sin(angleRad) * RADIUS;
+const z = Math.cos(angleRad); // 1 = front, -1 = back
+
+if (z < -0.1) return null; // skip items behind cylinder
+
+const opacity = Math.max(0, z * 1.1);
+const isActive = i === activeIndex;
+const blur = isActive ? 0 : Math.max(0, (1 - z) * 6);  // active = sharp, others = blurred
+const scale = 0.45 + z * 0.55;
+
+// Poke spring — only fires for active item
+const nudge = isActive ? spring({
+  frame: frame - activeItemCenterFrame[i],
+  fps,
+  config: { stiffness: 600, damping: 8, overshootClamping: false },
+  from: 18, to: 0,
+}) : 0;
+```
+
+### Arrow
+
+Fixed position at `CENTER_X`, nudges left when active item changes:
+
+```tsx
+const arrowNudge = spring({
+  frame: frame - activeItemCenterFrame[activeIndex],
+  fps,
+  config: { stiffness: 600, damping: 8, overshootClamping: false },
+  from: -24, to: 0,
+});
+
+// Arrow div
+<div style={{
+  position: "absolute",
+  left: CENTER_X - 58 + arrowNudge,
+  top: CENTER_Y - 36,
+  fontSize: 52, color: "#ffffff",
+}}>→</div>
+```
+
+### Container Setup
+
+Wrap in a perspective container with a slight `rotateY` to add depth like the Jitter reference:
+
+```tsx
+<div style={{
+  position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+  perspective: 1000,
+  perspectiveOrigin: "30% 50%",
+}}>
+  <div style={{
+    width: "100%", height: "100%",
+    transform: "rotateY(-10deg)",
+    transformStyle: "preserve-3d",
+  }}>
+    {/* arrow and items here */}
+  </div>
+</div>
+```
+
+### White Push-Up Transition
+
+Slide a white panel up from the bottom to wipe the scene — content rides up with it so it looks pushed, not covered.
+
+```tsx
+// At 5 seconds (frame 150), white slides up over 12 frames
+const whiteSlide = interpolate(frame, [150, 162], [1080, 0], {
+  extrapolateLeft: "clamp",
+  extrapolateRight: "clamp",
+  easing: Easing.inOut(Easing.cubic),
+});
+
+// Wrap all content in this div so it moves up with the panel
+<div style={{ width: "100%", height: "100%", transform: `translateY(${whiteSlide - 1080}px)` }}>
+  {/* ...scene content... */}
+</div>
+
+// White panel goes outside/after the content wrapper
+<div style={{
+  position: "absolute",
+  left: 0, right: 0,
+  top: whiteSlide,
+  height: 1080,
+  backgroundColor: "#ffffff",
+}} />
+```
+
+**Key detail:** `translateY(whiteSlide - 1080)` starts at 0 (no movement) and ends at -1080 (fully off top), perfectly in sync with the white panel rising from 1080 to 0.
+
+**Tuning:**
+- Frame range `[150, 162]` — 12 frames = fast. Use `[150, 170]` for slower.
+- `Easing.inOut(Easing.cubic)` — smooth acceleration + deceleration
+- Change `#ffffff` to any color for different wipe colors
+
+---
+
+### Tuning Guide
+- **More/fewer items** — update `ITEMS` array and `N`; `totalSpin` auto-adjusts
+- **Spacing between items** — `ITEM_ANGLE` (22° = comfortable, 18° = tighter, 30° = spread out)
+- **Depth of curve** — `RADIUS` (320 = moderate, 500 = very curved)
+- **Spin speed** — `SPIN_END` (160 frames = ~5.3s, 100 = faster)
+- **Hold at start** — first number in `interpolate(frame, [20, SPIN_END]...)` (20 = ~0.67s)
+- **Poke bounce** — `damping` on spring (8 = bouncy, 14 = snappy, 20 = no bounce)
+- **Blur intensity** — `(1 - z) * 6` (6 = moderate blur, 10 = heavy blur)
+- **Viewing angle** — `perspectiveOrigin` and `rotateY` on the container
+
+### Full Scene Template
+
+```tsx
+import React from "react";
+import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate, spring, Easing } from "remotion";
+
+const FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
+
+const ITEMS = [
+  "Item one",
+  "Item two",
+  "Item three",
+  "Item four",
+  "Item five",
+];
+
+const N = ITEMS.length;
+const ITEM_ANGLE = 22;
+const RADIUS = 320;
+const CENTER_Y = 500;
+const CENTER_X = 160;
+const SPIN_END = 160;
+
+export const WheelScene: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const totalSpin = -(N - 1) * ITEM_ANGLE;
+  const spinAngle = interpolate(frame, [20, SPIN_END], [0, totalSpin], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+    easing: Easing.out(Easing.cubic),
+  });
+
+  const activeIndex = ITEMS.reduce((closest, _, i) => {
+    const angle = i * ITEM_ANGLE + spinAngle;
+    const closestAngle = closest * ITEM_ANGLE + spinAngle;
+    return Math.abs(angle) < Math.abs(closestAngle) ? i : closest;
+  }, 0);
+
+  const activeItemCenterFrame = ITEMS.map((_, i) =>
+    (-i * ITEM_ANGLE / totalSpin) * SPIN_END
+  );
+
+  const arrowNudge = spring({
+    frame: frame - activeItemCenterFrame[activeIndex],
+    fps,
+    config: { stiffness: 600, damping: 8, overshootClamping: false },
+    from: -24, to: 0,
+  });
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: "#111111", overflow: "hidden" }}>
+      <div style={{
+        position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+        perspective: 1000, perspectiveOrigin: "30% 50%",
+      }}>
+        <div style={{
+          width: "100%", height: "100%",
+          transform: "rotateY(-10deg)", transformStyle: "preserve-3d",
+        }}>
+
+          <div style={{
+            position: "absolute",
+            left: CENTER_X - 58 + arrowNudge,
+            top: CENTER_Y - 36,
+            fontSize: 52, color: "#ffffff", fontFamily: FONT, lineHeight: 1, zIndex: 10,
+          }}>→</div>
+
+          {ITEMS.map((item, i) => {
+            const angleRad = (i * ITEM_ANGLE + spinAngle) * (Math.PI / 180);
+            const y = CENTER_Y + Math.sin(angleRad) * RADIUS;
+            const z = Math.cos(angleRad);
+            if (z < -0.1) return null;
+
+            const opacity = Math.max(0, z * 1.1);
+            const isActive = i === activeIndex;
+            const blur = isActive ? 0 : Math.max(0, (1 - z) * 6);
+            const scale = 0.45 + z * 0.55;
+
+            const nudge = isActive ? spring({
+              frame: frame - activeItemCenterFrame[i],
+              fps,
+              config: { stiffness: 600, damping: 8, overshootClamping: false },
+              from: 18, to: 0,
+            }) : 0;
+
+            return (
+              <div key={i} style={{
+                position: "absolute",
+                left: CENTER_X + nudge,
+                top: y - 40,
+                opacity,
+                filter: blur > 0.4 ? `blur(${blur}px)` : undefined,
+                transform: `scale(${scale})`,
+                transformOrigin: "left center",
+                fontSize: 72, fontWeight: 400, color: "#ffffff",
+                fontFamily: FONT, letterSpacing: "-0.02em",
+                lineHeight: 1, whiteSpace: "nowrap",
+              }}>
+                {item}
+              </div>
+            );
+          })}
+
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+```
+
+---
+
+## iOS App-Close Transition
+
+Shrinks the whole scene into a card then swipes it up off screen, leaving a clean background. Looks exactly like closing an app in the iOS app switcher.
+
+### How It Works
+
+Two phases:
+1. **Scale down** — uniform scale from 1 to ~0.48, add border radius
+2. **Swipe up** — translateY sends the card off screen
+
+Wrap the entire scene content in two divs — one for the iOS close transform, one for the background color.
+
+```tsx
+// Frame math
+const cardScale = interpolate(frame, [310, 330], [1, 0.48], {
+  extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  easing: Easing.inOut(Easing.cubic),
+});
+const cardSwipeUp = interpolate(frame, [330, 348], [0, -2400], {
+  extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  easing: Easing.in(Easing.cubic),
+});
+const cardBorderRadius = interpolate(frame, [310, 330], [0, 28], {
+  extrapolateLeft: "clamp", extrapolateRight: "clamp",
+});
+```
+
+```tsx
+// JSX — wrap entire scene content
+<AbsoluteFill style={{ backgroundColor: "#ffffff" }}>
+  {/* iOS close wrapper */}
+  <div style={{
+    position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
+    transform: `scale(${cardScale}) translateY(${cardSwipeUp}px)`,
+    transformOrigin: "center center",
+    borderRadius: cardBorderRadius,
+    overflow: "hidden",
+  }}>
+    <div style={{ width: "100%", height: "100%", backgroundColor: "#ffffff" }}>
+      {/* all scene content here */}
+    </div>
+  </div>
+</AbsoluteFill>
+```
+
+### Key Details
+- `backgroundColor` on the outer `AbsoluteFill` shows through as the card shrinks — set it to whatever the next scene's bg is (white, black, etc.)
+- `overflow: hidden` on the wrapper clips the content to the card shape
+- `easing: Easing.in(Easing.cubic)` on swipe up makes it accelerate as it exits — feels natural
+- `translateY(-2400)` ensures full exit even after the card has scaled down to 0.48
+- Scale `0.48` = comfortable card size. Go smaller (0.35) for a more dramatic effect.
+- Adjust `[310, 330]` and `[330, 348]` frame ranges to control when it starts and how fast
+
+### Tuning
+- **Slower shrink** — widen the scale range e.g. `[310, 340]`
+- **Faster swipe** — tighten the swipe range e.g. `[330, 342]`
+- **Bigger card** — increase scale to value e.g. `0.55`
+- **More rounded** — increase border radius end value e.g. `40`
+
+---
+
 ## Creative Concept Starting Points
 
 Think in UI elements the audience already recognizes:
