@@ -48,6 +48,13 @@ export const SimonesScene2: React.FC<SimonesProps> = () => {
     easing: Easing.inOut(Easing.cubic),
   });
 
+  // Bridge line: slides up with white panel, slides right fast at 194
+  const bridgeSlideOut = interpolate(frame, [194, 200], [0, 1400], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+    easing: Easing.in(Easing.cubic),
+  });
+  const bridgeVisible = frame >= 150 && frame < 200;
+
   // Spin stops when ARROW_STOP_INDEX item reaches front
   const totalSpin = -ARROW_STOP_INDEX * ITEM_ANGLE;
   const spinAngle = interpolate(frame, [20, SPIN_END], [0, totalSpin], {
@@ -163,6 +170,26 @@ export const SimonesScene2: React.FC<SimonesProps> = () => {
         height: 1080,
         backgroundColor: "#ffffff",
       }} />
+      {/* Bridge line — slides up with white panel, pops in/out */}
+      <div style={{
+        position: "absolute",
+        left: 80,
+        top: whiteSlide + 460,
+        display: bridgeVisible ? "block" : "none",
+        transform: `translateX(${bridgeSlideOut}px)`,
+        transformOrigin: "left center",
+        pointerEvents: "none",
+      }}>
+        <div style={{
+          fontSize: 64,
+          fontWeight: 700,
+          color: "#111111",
+          letterSpacing: "-0.02em",
+          lineHeight: 1.2,
+        }}>
+          What if the answer<br />just showed up?
+        </div>
+      </div>
     </AbsoluteFill>
   );
 };

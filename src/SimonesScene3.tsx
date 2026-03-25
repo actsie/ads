@@ -29,7 +29,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
 
-  // Morph: notification → chat bubble (frames 60–85)
+  // Morph: notification → chat bubble (frames 60–76)
   const morphProgress = interpolate(frame, [60, 76], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
