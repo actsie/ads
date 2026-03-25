@@ -120,7 +120,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
   });
 
   // iOS app-close: scale down to card (frames 310–330), then swipe up (frames 330–348)
-  const cardScale = interpolate(frame, [310, 330], [1, 0.48], {
+  const cardScale = interpolate(frame, [318, 330], [1, 0.48], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
     easing: Easing.inOut(Easing.cubic),
   });
@@ -349,7 +349,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
             color: "#111111",
             lineHeight: 1.5,
           }}>
-            Done. {suggestedSpecial} set as today's special — you might also want to write it on the board at the counter. Matcha reorder placed — delivery scheduled for tomorrow morning.
+            Done. {suggestedSpecial} ready to go as today's special — you might also want to write it on the board at the counter. Matcha reorder placed — delivery scheduled for tomorrow morning.
           </div>
         </div>
 

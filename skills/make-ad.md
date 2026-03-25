@@ -851,3 +851,92 @@ Think in UI elements the audience already recognizes:
 - **Calendar** — appointments missed, time freed up
 
 Then map the concept to a visual and a frame timeline before prompting.
+
+---
+
+## Simones 4-Scene Video Template
+
+A complete templatized 4-scene ad for coffee shops. All scenes driven by a single schema — swap props per client, no code changes needed.
+
+**Files:**
+- `src/SimonesSchema.ts` — Zod schema
+- `src/SimonesVideo.tsx` — sequences all 4 scenes
+- `src/SimonesScene1.tsx` — card fan (client photos)
+- `src/SimonesScene2.tsx` — pain wheel + bridge line
+- `src/SimonesScene3.tsx` — AI chat / notification scene
+- `src/SimonesScene4.tsx` — CTA close
+
+### Schema
+
+```ts
+export const simonesSchema = z.object({
+  shopName: z.string(),         // e.g. "Simone's" — used in Scene3 AI header + Scene4 CTA
+  photoFolder: z.string(),      // folder name under /public/ e.g. "SIMONES"
+  photos: z.array(z.string()),  // filenames for Scene1 card fan
+  productPhoto: z.string(),     // product shot shown in Scene3 chat e.g. "coldbrew.jpg"
+  suggestedSpecial: z.string(), // fills AI suggestion text in Scene3 e.g. "Vanilla Creme Cold Brew"
+  draftPostCaption: z.string(), // the draft Instagram post text shown in Scene3
+});
+```
+
+### Scene Durations
+
+| Scene | Frames | Duration |
+|-------|--------|----------|
+| Scene1 | 100 | 3.3s — card fan, photos fanned like holding cards |
+| Scene2 | 202 | 6.7s — pain wheel, white push-up, bridge line |
+| Scene3 | 347 | 11.6s — AI notification → chat → iOS app-close |
+| Scene4 | 160 | 5.3s — CTA close, text lines, heart, team sign-off |
+| **Total** | **809** | **~27s** |
+
+### To adapt for a new shop
+
+1. Add client photos to `public/SHOPNAME/`
+2. In `Root.tsx`, add a new `<Composition>` with `component={SimonesVideo}` and update `defaultProps`:
+
+```tsx
+<Composition
+  id="NewShopVideo"
+  component={SimonesVideo}
+  durationInFrames={SIMONES_TOTAL_FRAMES}
+  fps={30}
+  width={1080}
+  height={1080}
+  schema={simonesSchema}
+  defaultProps={{
+    shopName: "Shop Name",
+    photoFolder: "SHOP_FOLDER",
+    photos: [
+      "photo1.jpg",
+      "photo2.jpg",
+      // one per card in Scene1
+    ],
+    productPhoto: "product.jpg",
+    suggestedSpecial: "The Special Name",
+    draftPostCaption: "Your caption here...",
+  }}
+/>
+```
+
+### Scene3 — AI Chat Detail
+
+- Notification text is hardcoded: *"1 carton of heavy cream expires in 5 days. Suggest a special to move it?"*
+- AI header: `{shopName.toUpperCase()} AI` with ✦ sparkle avatar (white on black)
+- Chat flow: notification → morph to bubble → "Yes pls" → typing → options (uses `suggestedSpecial`) → "Do both" → confirm → product photo → draft post (uses `draftPostCaption`) → iOS app-close
+- Scroll: content translates up at frames 200–220 to keep latest bubble visible
+- iOS app-close: pinch frames 318–330, swipe up frames 330–340
+
+### Bridge Line (Scene2 → Scene3 transition)
+
+At the end of Scene2, after the white panel slides up:
+- Frame 150–162: white slides up
+- Frame 189: "What if the answer just showed up? 🫨" pops in (spring stiffness 600)
+- Frame 194–200: text + emoji slide right fast (`Easing.in(Easing.cubic)`) and snap gone
+
+### Scene4 — CTA Close
+
+- Line 1 (frame 2): `{shopName} was top of mind when we started this.` + ❤️ pops at frame 45
+- Line 2 (frame 63): "Free setup, no obligations."
+- Line 3 (frame 85): "Reply **yes** if you're interested." — "yes" is red `#e0253a` to match ❤️
+- Team (frame 100): "— Fountain of Scale team"
+- Scene slides up at frame 145–160 (white only, content stays)
