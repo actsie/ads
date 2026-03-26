@@ -10,6 +10,8 @@ import { MellowCupScene2 } from "./MellowCupScene2";
 import { MellowCupScene4 } from "./MellowCupScene4";
 import { mellowCupSchema } from "./MellowCupSchema";
 import { SimonesScene1 } from "./SimonesScene1";
+import { POSVideo, POS_TOTAL_FRAMES } from "./POSVideo";
+import { posSchema } from "./POSSchema";
 import { SimonesScene2 } from "./SimonesScene2";
 import { SimonesScene3 } from "./SimonesScene3";
 import { SimonesScene4 } from "./SimonesScene4";
@@ -110,6 +112,103 @@ export const RemotionRoot: React.FC = () => {
           accentColor: "#7bb661",
           productImage: "matcha.png",
           logoImage: "bubble1.png",
+        }}
+      />
+      <Composition
+        id="POSVideoDemo"
+        component={POSVideo}
+        durationInFrames={POS_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={posSchema}
+        defaultProps={{
+          shopName: "Simone's",
+          photoFolder: "SIMONES",
+          photos: [
+            "646418797_1468586038611091_7206347187926231118_n.jpg",
+            "653062545_1479455094190852_8656525538161025741_n.jpg",
+            "653358140_1481061464030215_7821472743304600534_n.jpg",
+            "654300608_1484839580319070_8288790873785131178_n.jpg",
+            "5b3970_424c96de57cc49fda1fa3ea2433531e1~mv2.avif",
+            "5b3970_6af63a58d89e4c0698d8b764e862ad81~mv2.avif",
+            "5b3970_6d93a0982aeb4fe6a618a1d40a977aaf~mv2.avif",
+          ],
+          productPhoto: "coldbrew.jpg",
+          lowStockItem: "cold brew concentrate",
+          salesTrend: "up 40% this week",
+          reorderItem: "Cold Brew Concentrate — 2 x 5L bags",
+        }}
+      />
+      <Composition
+        id="Camp4Video"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "Camp 4",
+          photoFolder: "CAMP4",
+          photos: [
+            "474092134_18479098606022230_7411875934179316507_n.jpg",
+            "626041352_18555988501022230_3398964955640932031_n.jpg",
+            "642538141_18566714782022230_1367799785315825653_n.jpg",
+            "90186camp4-33.avif",
+            "9432camp4-39.avif",
+          ],
+          productPhoto: "ahi.jpg",
+          suggestedSpecial: "Poke Bowl",
+          draftPostCaption: "Fresh ahi, clean ponzu, sticky rice 🐟 The Poke Bowl is today's special — made with fish that just came in. Get it while it's fresh.",
+        }}
+      />
+      <Composition
+        id="AnotherCafeVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "Another Café",
+          photoFolder: "ANOTHERCAFE",
+          photos: [
+            "640949161_26232613139688476_7613851020880952640_n.jpg",
+            "641083158_26232613216355135_8015692572828906069_n.jpg",
+            "641417281_26232613236355133_4043358617449244629_n.jpg",
+            "642738967_26232612929688497_1653471586369683466_n.jpg",
+            "642749387_26232613133021810_307173276034524144_n.jpg",
+            "642990047_26232613123021811_362449972240992923_n.jpg",
+          ],
+          productPhoto: "cafeaulait.png",
+          suggestedSpecial: "Café au Lait",
+          draftPostCaption: "Simple done right ☕ Café au Lait is today's special — bold espresso, steamed milk, nothing extra. Just the way it should be.",
+        }}
+      />
+      <Composition
+        id="WithLoveVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "With Love Market and Café",
+          photoFolder: "WITHLOVE",
+          photos: [
+            "489453314_1713102642716225_3912688490791994708_n.jpg",
+            "490764322_1720175855342237_3366509561559672954_n.jpg",
+            "491840682_1724136961612793_4863117923949882552_n.jpg",
+            "491932844_1722417195118103_3520506009875603452_n.jpg",
+            "495162818_18503991256058501_7983552542892479075_n.jpg",
+            "518508349_18517433002058501_1805794820424273562_n.jpg",
+          ],
+          productPhoto: "HorchataColdBrew.jpg",
+          suggestedSpecial: "Horchata Cold Brew",
+          draftPostCaption: "Cool, creamy, and a little nostalgic ☕🤍 Horchata Cold Brew is today's special — the kind of sip that just feels like home. Come get yours.",
         }}
       />
       <Composition
