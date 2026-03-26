@@ -83,10 +83,8 @@ export const SimonesScene2: React.FC<SimonesProps> = () => {
     ARROW_STOP_INDEX
   );
 
-  // Arrow nudge — fires when active item changes
-  const activeItemCenterFrame = PAINS.map((_, i) =>
-    (-i * ITEM_ANGLE / totalSpin) * SPIN_END
-  );
+  // Exact frames when each item aligns with the arrow
+  const activeItemCenterFrame = [20, 33, 50, 73, 144, 144, 144];
 
 
   return (
@@ -135,13 +133,13 @@ export const SimonesScene2: React.FC<SimonesProps> = () => {
             const blur = isActive ? 0 : Math.max(0, (1 - z) * 6);
             const scale = 0.45 + z * 0.55;
 
-            // Quick snappy nudge — overdamped so it settles in ~3 frames
-            const nudge = isActive ? spring({
+            // Passing items: nudge right and settle back. Final stop item: nudge right and stay.
+            const nudge = isActive && frame >= activeItemCenterFrame[i] ? spring({
               frame: frame - activeItemCenterFrame[i],
               fps,
-              config: { stiffness: 1200, damping: 60, overshootClamping: true },
-              from: 10,
-              to: 0,
+              config: { stiffness: 400, damping: 28, overshootClamping: true },
+              from: i === ARROW_STOP_INDEX ? 0 : 10,
+              to: i === ARROW_STOP_INDEX ? 10 : 0,
             }) : 0;
 
             return (

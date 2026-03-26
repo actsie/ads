@@ -75,9 +75,11 @@ export const POSScene2: React.FC<POSProps> = () => {
     ARROW_STOP_INDEX
   );
 
-  const activeItemCenterFrame = PAINS.map((_, i) =>
-    (-i * ITEM_ANGLE / totalSpin) * SPIN_END
-  );
+  const activeItemCenterFrame = PAINS.map((_, i) => {
+    const p = i / ARROW_STOP_INDEX;
+    const t = 1 - Math.pow(1 - p, 1 / 3);
+    return 20 + t * (SPIN_END - 20);
+  });
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#111111", overflow: "hidden" }}>
@@ -114,12 +116,12 @@ export const POSScene2: React.FC<POSProps> = () => {
               const blur = isActive ? 0 : Math.max(0, (1 - z) * 6);
               const scale = 0.45 + z * 0.55;
 
-              const nudge = isActive ? spring({
+              const nudge = isActive && frame >= activeItemCenterFrame[i] ? spring({
                 frame: frame - activeItemCenterFrame[i],
                 fps,
-                config: { stiffness: 1200, damping: 60, overshootClamping: true },
-                from: 10,
-                to: 0,
+                config: { stiffness: 400, damping: 28, overshootClamping: true },
+                from: i === ARROW_STOP_INDEX ? 0 : 10,
+                to: i === ARROW_STOP_INDEX ? 10 : 0,
               }) : 0;
 
               return (
@@ -169,7 +171,7 @@ export const POSScene2: React.FC<POSProps> = () => {
           letterSpacing: "-0.02em",
           lineHeight: 1.2,
         }}>
-          What if it just acted<br />on the data? {" "}
+          What if your data<br />just worked for you? {" "}
           <span style={{
             display: emojiVisible ? "inline-block" : "none",
             transform: `scale(${emojiScale})`,

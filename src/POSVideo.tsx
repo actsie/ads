@@ -6,7 +6,7 @@ import { POSScene2 } from "./POSScene2";
 import { POSScene3 } from "./POSScene3";
 import { POSScene4 } from "./POSScene4";
 
-const S1 = 100;
+const S1 = 120;
 const S2 = 202;
 const S3 = 347;
 const S4 = 160;

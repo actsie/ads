@@ -31,7 +31,7 @@ export const SimonesScene1: React.FC<SimonesProps> = ({ photoFolder, photos }) =
   });
 
   // Slide up exit
-  const slideUp = interpolate(frame, [95, 100], [0, -1200], {
+  const slideUp = interpolate(frame, [115, 120], [0, -1200], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
     easing: Easing.in(Easing.cubic),
   });
@@ -176,7 +176,7 @@ export const SimonesScene1: React.FC<SimonesProps> = ({ photoFolder, photos }) =
                   letterSpacing: "-0.03em",
                   lineHeight: 1.2,
                 }}>
-                  But it's harder<br />than it should be.
+                  The work never stops.<br />Some of it should.
                 </div>
               </div>
             </div>

@@ -38,7 +38,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
 
   const cardLeft = interpolate(morphProgress, [0, 1], [90, 60]);
   const cardTop = interpolate(morphProgress, [0, 1], [260, 80]);
-  const cardWidth = interpolate(morphProgress, [0, 1], [900, 780]);
+  const cardWidth = interpolate(morphProgress, [0, 1], [900, 560]);
   const cardRadiusTopLeft = interpolate(morphProgress, [0, 1], [32, 22]);
   const cardRadiusTopRight = interpolate(morphProgress, [0, 1], [32, 22]);
   const cardRadiusBottomRight = interpolate(morphProgress, [0, 1], [32, 22]);
@@ -56,7 +56,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
   });
 
   // Only scroll up when confirm bubble is about to appear
-  const scrollY = interpolate(frame, [200, 220], [0, 650], {
+  const scrollY = interpolate(frame, [200, 220], [0, 200], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
     easing: Easing.out(Easing.cubic),
   });
@@ -217,7 +217,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
         <div style={{
           position: "absolute",
           right: 60,
-          top: 226,
+          top: 220,
           opacity: replyOpacity,
           transform: `translateX(${replySlide}px)`,
         }}>
@@ -237,7 +237,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
         <div style={{
           position: "absolute",
           left: 60,
-          top: 310,
+          top: 290,
           opacity: typingOpacity,
         }}>
           <div style={{
@@ -264,7 +264,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
         <div style={{
           position: "absolute",
           left: 60,
-          top: 310,
+          top: 290,
           opacity: responseOpacity,
           transform: `translateX(${responseSlide}px)`,
           width: 780,
@@ -275,21 +275,16 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
             padding: "22px 26px",
           }}>
             <div style={{ fontSize: 20, color: "#111111", lineHeight: 1.6 }}>
-              Based on what's in stock, here are your best options:<br /><br />
-              ☕ <strong>{suggestedSpecial}</strong> — best option. You have 1 full carton of cream, 1 bottle of vanilla syrup, and cold brew concentrate in stock. Enough for ~20 cups.<br /><br />
-              🥛 <strong>Cream Matcha Latte</strong> — works too, but matcha tin is nearly empty. Good for ~10 cups before you run out. Restock takes 1–2 days.<br /><br />
-              Want me to:<br />
-              - Add {suggestedSpecial} to the menu?<br />
-              - Order more matcha?
+              Based on what's expiring, <strong>{suggestedSpecial}</strong> is your best move. You have enough to make ~20 cups today. Want me to add it as today's special?
             </div>
           </div>
         </div>
 
-        {/* "Do both" reply */}
+        {/* "Yes do it" reply */}
         <div style={{
           position: "absolute",
           right: 60,
-          top: 840,
+          top: 450,
           opacity: doBothOpacity,
           transform: `translateX(${doBothSlide}px)`,
         }}>
@@ -301,7 +296,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
             padding: "14px 20px",
             borderRadius: "22px 22px 4px 22px",
           }}>
-            Do both
+            Yes do it
           </div>
         </div>
 
@@ -309,7 +304,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
         <div style={{
           position: "absolute",
           left: 60,
-          top: 930,
+          top: 520,
           opacity: confirmTypingOpacity,
         }}>
           <div style={{
@@ -336,7 +331,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
         <div style={{
           position: "absolute",
           left: 60,
-          top: 930,
+          top: 520,
           opacity: confirmOpacity,
           transform: `translateX(${confirmSlide}px)`,
           maxWidth: 780,
@@ -349,7 +344,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
             color: "#111111",
             lineHeight: 1.5,
           }}>
-            Done. {suggestedSpecial} ready to go as today's special — you might also want to write it on the board at the counter. Matcha reorder placed — delivery scheduled for tomorrow morning.
+            Done. {suggestedSpecial} is today's special — write it on the board and you're good to go.
           </div>
         </div>
 
@@ -357,7 +352,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
         <div style={{
           position: "absolute",
           left: 60,
-          top: 1080,
+          top: 630,
           opacity: photoOpacity,
           transform: `translateX(${photoSlide}px)`,
         }}>
@@ -378,7 +373,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
         <div style={{
           position: "absolute",
           left: 60,
-          top: 1440,
+          top: 990,
           opacity: postPromptOpacity,
           transform: `translateX(${postPromptSlide}px)`,
           maxWidth: 780,

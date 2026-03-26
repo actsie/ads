@@ -18,7 +18,6 @@ import { SimonesScene4 } from "./SimonesScene4";
 import { SimonesVideo, SIMONES_TOTAL_FRAMES } from "./SimonesVideo";
 import { simonesSchema } from "./SimonesSchema";
 
-
 export const RemotionRoot: React.FC = () => {
   return (
     <>
@@ -115,6 +114,170 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
+        id="CafeNidoVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "Cafe Nido",
+          photoFolder: "CAFENIDO",
+          photos: [
+            "21.png",
+            "22.png",
+            "23.png",
+            "24.png",
+            "25.png",
+            "26.png",
+          ],
+          productPhoto: "23.png",
+          suggestedSpecial: "Strawberry Cream Matcha",
+          draftPostCaption: "Sweet strawberry, earthy matcha, silky cream. 🍓🍵 Strawberry Cream Matcha is today's special — come get yours.",
+          perishableAlert: "Fresh strawberries expire in 2 days. Suggest a special to move it?",
+        }}
+      />
+      <Composition
+        id="CafeDulceVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "Cafe Dulce",
+          photoFolder: "CAFEDULCE",
+          photos: ["14.png", "15.png", "16.png", "17.png", "18.png", "19.png"],
+          productPhoto: "14.png",
+          suggestedSpecial: "Sprownie",
+          draftPostCaption:
+            "Some days just call for a Sprownie. ☁️ Today's special — come get yours.",
+          perishableAlert:
+            "A fresh batch of chocolate ganache expires in 2 days. Suggest a special to move it?",
+        }}
+      />
+      <Composition
+        id="CafeCodaChicoVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "Cafe Coda Chico",
+          photoFolder: "CAFECODA",
+          photos: [
+            "141377835_1823053194526473_1263838001914431102_n.jpg",
+            "475022937_2957918531039928_35575547156555566_n.jpg",
+            "475729363_2962686523896462_4775967282374387584_n.jpg",
+            "481264189_2984944145004033_336065755955468767_n.jpg",
+            "488951697_1425556168748110_1084671918610591007_n.jpg",
+            "490114152_18173154148323354_5643771024528637862_n.jpg",
+          ],
+          productPhoto: "VeganChilaquiles.jpg",
+          suggestedSpecial: "Vegan Chilaquiles 2.0",
+          draftPostCaption:
+            "Crispy tortillas, bold salsa, all the good stuff — zero compromise. 🌿 Vegan Chilaquiles 2.0 is today's special. Come get yours.",
+          perishableAlert:
+            "A batch of fresh tomatillos expires in 2 days. Suggest a special to move it?",
+        }}
+      />
+      <Composition
+        id="AlchemyCafeVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "Alchemy Cafe",
+          photoFolder: "ALCHEMYCAFE",
+          photos: ["8.png", "9.png", "10.png", "11.png", "12.png", "13.png"],
+          productPhoto: "8.png",
+          suggestedSpecial: "Pumpkin Bread Pudding",
+          draftPostCaption:
+            "Warm, spiced, and just the right amount of indulgent. 🎃 Pumpkin Bread Pudding is today's special — come get it while it's fresh.",
+          perishableAlert:
+            "A batch of fresh pumpkin puree expires in 2 days. Suggest a special to move it?",
+        }}
+      />
+      <Composition
+        id="27ClubCoffeeVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "27 Club Coffee",
+          photoFolder: "27CLUB",
+          photos: [
+            "651921861_18318242548265673_7621978755663340608_n.jpg",
+            "652590303_18318242530265673_5510019149737410481_n.jpg",
+            "653352259_18318242557265673_3302946641562928770_n.jpg",
+            "653458134_18318242518265673_4644632358168964480_n.jpg",
+            "653765502_18319129483265673_9062101963145295377_n.jpg",
+            "653905121_18319129465265673_1256889901545683181_n.jpg",
+          ],
+          productPhoto: "espressomartini.jpg",
+          suggestedSpecial: "Espresso Martini",
+          draftPostCaption:
+            "Bold espresso. Smooth vodka. Shaken cold. ☕🍸 The Espresso Martini is today's special — come get yours.",
+          perishableAlert:
+            "1 bottle of espresso liqueur expires in 4 days. Suggest a special to move it?",
+        }}
+      />
+      <Composition
+        id="FrostMeCafeVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "Frost Me Cafe and Bakery",
+          photoFolder: "FROSTME",
+          photos: [
+            "505459873_18507180859018266_4633803666203142650_n.jpg",
+            "530845129_18518104696018266_9183145574327834941_n.jpg",
+            "598123350_18542997214018266_7331989447574512229_n.jpg",
+            "610950069_18546843424018266_2396785327955321411_n.jpg",
+            "611651232_18548035918018266_4262294001436202448_n.jpg",
+            "616855590_18548818234018266_4882273166892887012_n.jpg",
+          ],
+          productPhoto: "latte.jpg",
+          suggestedSpecial: "Ube Lavender Latte",
+          draftPostCaption:
+            "Earthy ube, soft lavender, steamed just right. ☕💜 The Ube Lavender Latte is today's special — come get yours before it's gone.",
+          perishableAlert:
+            "1 carton of whole milk expires in 3 days. Suggest a special to move it?",
+        }}
+      />
+      <Composition
+        id="FrontsideCafeVideo"
+        component={POSVideo}
+        durationInFrames={POS_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={posSchema}
+        defaultProps={{
+          shopName: "Frontside Cafe",
+          photoFolder: "FRONTSIDE",
+          photos: ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png"],
+          productPhoto: "4.png",
+          lowStockItem: "albacore tuna",
+          salesTrend: "up 40% this week",
+          reorderItem: "Line-Caught Albacore Tuna — 2kg",
+        }}
+      />
+      <Composition
         id="POSVideoDemo"
         component={POSVideo}
         durationInFrames={POS_TOTAL_FRAMES}
@@ -142,12 +305,12 @@ export const RemotionRoot: React.FC = () => {
       />
       <Composition
         id="Camp4Video"
-        component={SimonesVideo}
-        durationInFrames={SIMONES_TOTAL_FRAMES}
+        component={POSVideo}
+        durationInFrames={POS_TOTAL_FRAMES}
         fps={30}
         width={1080}
         height={1080}
-        schema={simonesSchema}
+        schema={posSchema}
         defaultProps={{
           shopName: "Camp 4",
           photoFolder: "CAMP4",
@@ -159,19 +322,19 @@ export const RemotionRoot: React.FC = () => {
             "9432camp4-39.avif",
           ],
           productPhoto: "ahi.jpg",
-          suggestedSpecial: "Poke Bowl",
-          draftPostCaption: "Fresh ahi, clean ponzu, sticky rice 🐟 The Poke Bowl is today's special — made with fish that just came in. Get it while it's fresh.",
-          perishableAlert: "Fresh ahi tuna expires in 2 days. Suggest a special to move it?",
+          lowStockItem: "fresh ahi tuna",
+          salesTrend: "up 40% this week",
+          reorderItem: "Fresh Ahi Tuna — 2kg",
         }}
       />
       <Composition
         id="AnotherCafeVideo"
-        component={SimonesVideo}
-        durationInFrames={SIMONES_TOTAL_FRAMES}
+        component={POSVideo}
+        durationInFrames={POS_TOTAL_FRAMES}
         fps={30}
         width={1080}
         height={1080}
-        schema={simonesSchema}
+        schema={posSchema}
         defaultProps={{
           shopName: "Another Café",
           photoFolder: "ANOTHERCAFE",
@@ -184,106 +347,12 @@ export const RemotionRoot: React.FC = () => {
             "642990047_26232613123021811_362449972240992923_n.jpg",
           ],
           productPhoto: "cafeaulait.png",
-          suggestedSpecial: "Café au Lait",
-          draftPostCaption: "Simple done right ☕ Café au Lait is today's special — bold espresso, steamed milk, nothing extra. Just the way it should be.",
-          perishableAlert: "1 carton of heavy cream expires in 4 days. Suggest a special to move it?",
+          lowStockItem: "heavy cream",
+          salesTrend: "up 40% this week",
+          reorderItem: "Heavy Cream — 2 x 1L cartons",
         }}
       />
-      <Composition
-        id="WithLoveVideo"
-        component={SimonesVideo}
-        durationInFrames={SIMONES_TOTAL_FRAMES}
-        fps={30}
-        width={1080}
-        height={1080}
-        schema={simonesSchema}
-        defaultProps={{
-          shopName: "With Love Market and Café",
-          photoFolder: "WITHLOVE",
-          photos: [
-            "489453314_1713102642716225_3912688490791994708_n.jpg",
-            "490764322_1720175855342237_3366509561559672954_n.jpg",
-            "491840682_1724136961612793_4863117923949882552_n.jpg",
-            "491932844_1722417195118103_3520506009875603452_n.jpg",
-            "495162818_18503991256058501_7983552542892479075_n.jpg",
-            "518508349_18517433002058501_1805794820424273562_n.jpg",
-          ],
-          productPhoto: "HorchataColdBrew.jpg",
-          suggestedSpecial: "Horchata Cold Brew",
-          draftPostCaption: "Cool, creamy, and a little nostalgic ☕🤍 Horchata Cold Brew is today's special — the kind of sip that just feels like home. Come get yours.",
-          perishableAlert: "1 carton of heavy cream expires in 3 days. Suggest a special to move it?",
-        }}
-      />
-      <Composition
-        id="WitchsCottageVideo"
-        component={SimonesVideo}
-        durationInFrames={SIMONES_TOTAL_FRAMES}
-        fps={30}
-        width={1080}
-        height={1080}
-        schema={simonesSchema}
-        defaultProps={{
-          shopName: "The Witch's Cottage",
-          photoFolder: "WITCHCOTTAGE",
-          photos: [
-            "476359942_122116785176681230_7052342118881319769_n.jpg",
-            "557743220_122148074936681230_314570420331584358_n.jpg",
-            "561566769_122148802358681230_2915470312944486006_n.jpg",
-            "562348204_17885296263381738_4358557765492544552_n.jpg",
-          ],
-          productPhoto: "pumpkinspicelatte.jpg",
-          suggestedSpecial: "Pumpkin Spice Latté",
-          draftPostCaption: "Something wicked this way brews 🎃🧙 Pumpkin Spice Latté and a Tequila Based Cocktail — pick your potion. Come in before they disappear.",
-          perishableAlert: "1 carton of fresh cream expires in 3 days. Suggest a special to move it?",
-        }}
-      />
-      <Composition
-        id="TradeCoffeeVideo"
-        component={SimonesVideo}
-        durationInFrames={SIMONES_TOTAL_FRAMES}
-        fps={30}
-        width={1080}
-        height={1080}
-        schema={simonesSchema}
-        defaultProps={{
-          shopName: "The Trade",
-          photoFolder: "TRADECOFFEE",
-          photos: [
-            "trade1.png",
-            "trade2.png",
-            "trade3.png",
-          ],
-          productPhoto: "spicedorangelatte.png",
-          suggestedSpecial: "Spiced Orange Latte",
-          draftPostCaption: "Spice up your day ☕🍊 Our Spiced Orange Latte is warm, bright, and just the right kind of bold. Come get yours.",
-          perishableAlert: "1 carton of heavy cream expires in 4 days. Suggest a special to move it?",
-        }}
-      />
-      <Composition
-        id="MentalBarVideo"
-        component={SimonesVideo}
-        durationInFrames={SIMONES_TOTAL_FRAMES}
-        fps={30}
-        width={1080}
-        height={1080}
-        schema={simonesSchema}
-        defaultProps={{
-          shopName: "The Mental Bar",
-          photoFolder: "MENTALBAR",
-          photos: [
-            "630116506_18303102907273663_2266682730110961936_n.jpg",
-            "631503558_18302617039273663_2275763246930327476_n.jpg",
-            "641665379_18305231629273663_5583976111123888365_n.jpg",
-            "641782131_18304655401273663_6297599026826235449_n.jpg",
-            "646158541_18305439064273663_5621118318309397307_n.jpg",
-            "651912908_18307060726273663_6960842075677662510_n.jpg",
-          ],
-          productPhoto: "gengerchaichill.jpg",
-          suggestedSpecial: "Ginger Chai Chill",
-          draftPostCaption: "A creamy, icy chai frappe blended with bold ginger for a perfectly spiced, refreshing sip.",
-          perishableAlert: "Fresh ginger expires in 3 days. Suggest a special to move it?",
-        }}
-      />
+
       <Composition
         id="SimonesVideo"
         component={SimonesVideo}
@@ -306,14 +375,16 @@ export const RemotionRoot: React.FC = () => {
           ],
           productPhoto: "coldbrew.jpg",
           suggestedSpecial: "Vanilla Creme Cold Brew",
-          draftPostCaption: "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
-          perishableAlert: "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
+          draftPostCaption:
+            "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
+          perishableAlert:
+            "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
         }}
       />
       <Composition
         id="SimonesScene1"
         component={SimonesScene1}
-        durationInFrames={100}
+        durationInFrames={120}
         fps={30}
         width={1080}
         height={1080}
@@ -332,8 +403,10 @@ export const RemotionRoot: React.FC = () => {
           ],
           productPhoto: "coldbrew.jpg",
           suggestedSpecial: "Vanilla Creme Cold Brew",
-          draftPostCaption: "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
-          perishableAlert: "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
+          draftPostCaption:
+            "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
+          perishableAlert:
+            "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -350,8 +423,10 @@ export const RemotionRoot: React.FC = () => {
           photos: [],
           productPhoto: "coldbrew.jpg",
           suggestedSpecial: "Vanilla Creme Cold Brew",
-          draftPostCaption: "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
-          perishableAlert: "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
+          draftPostCaption:
+            "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
+          perishableAlert:
+            "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -368,8 +443,10 @@ export const RemotionRoot: React.FC = () => {
           photos: [],
           productPhoto: "coldbrew.jpg",
           suggestedSpecial: "Vanilla Creme Cold Brew",
-          draftPostCaption: "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
-          perishableAlert: "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
+          draftPostCaption:
+            "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
+          perishableAlert:
+            "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -386,8 +463,10 @@ export const RemotionRoot: React.FC = () => {
           photos: [],
           productPhoto: "coldbrew.jpg",
           suggestedSpecial: "Vanilla Creme Cold Brew",
-          draftPostCaption: "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
-          perishableAlert: "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
+          draftPostCaption:
+            "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
+          perishableAlert:
+            "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
         }}
       />
     </>

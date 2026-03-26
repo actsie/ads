@@ -127,7 +127,7 @@ export const POSScene4: React.FC<POSProps> = ({ shopName }) => {
             letterSpacing: "-0.02em",
             lineHeight: 1.3,
           }}>
-            Connects to your existing POS in minutes.
+            Free setup. No obligations.
           </div>
         </div>
 

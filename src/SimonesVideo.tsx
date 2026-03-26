@@ -7,7 +7,7 @@ import { SimonesScene4 } from "./SimonesScene4";
 import { SimonesProps } from "./SimonesSchema";
 
 // Scene durations in frames
-const S1 = 100;
+const S1 = 120;
 const S2 = 202;
 const S3 = 347;
 const S4 = 160;

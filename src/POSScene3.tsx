@@ -7,13 +7,11 @@ import {
   interpolate,
   spring,
   Easing,
-  Img,
-  staticFile,
 } from "remotion";
 
 const FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
 
-export const POSScene3: React.FC<POSProps> = ({ shopName, photoFolder, productPhoto, lowStockItem, salesTrend, reorderItem }) => {
+export const POSScene3: React.FC<POSProps> = ({ shopName, lowStockItem, salesTrend, reorderItem }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -38,7 +36,7 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, photoFolder, productPh
 
   const cardLeft = interpolate(morphProgress, [0, 1], [90, 60]);
   const cardTop = interpolate(morphProgress, [0, 1], [260, 80]);
-  const cardWidth = interpolate(morphProgress, [0, 1], [900, 780]);
+  const cardWidth = interpolate(morphProgress, [0, 1], [900, 560]);
   const cardRadiusTopLeft = interpolate(morphProgress, [0, 1], [32, 22]);
   const cardRadiusTopRight = interpolate(morphProgress, [0, 1], [32, 22]);
   const cardRadiusBottomRight = interpolate(morphProgress, [0, 1], [32, 22]);
@@ -53,12 +51,6 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, photoFolder, productPh
   const cardPadding = interpolate(morphProgress, [0, 1], [44, 18]);
   const shadowOpacity = interpolate(morphProgress, [0, 0.6], [1, 0], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
-  });
-
-  // Scroll up when confirm bubble appears
-  const scrollY = interpolate(frame, [200, 220], [0, 600], {
-    extrapolateLeft: "clamp", extrapolateRight: "clamp",
-    easing: Easing.out(Easing.cubic),
   });
 
   // "Yes pls" reply (frames 95–108)
@@ -90,7 +82,7 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, photoFolder, productPh
     to: 0,
   });
 
-  // "Place order" reply (frame 183)
+  // "Place the order" reply (frame 183)
   const orderOpacity = interpolate(frame, [183, 193], [0, 1], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
@@ -102,7 +94,7 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, photoFolder, productPh
     to: 0,
   });
 
-  // Typing before confirm (frames 196–210)
+  // Typing before confirm (frames 196–218)
   const confirmTypingOpacity = interpolate(frame, [196, 202, 218, 223], [0, 1, 1, 0], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
@@ -113,18 +105,6 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, photoFolder, productPh
   });
   const confirmSlide = spring({
     frame: frame - 223,
-    fps,
-    config: { stiffness: 200, damping: 22 },
-    from: -50,
-    to: 0,
-  });
-
-  // Product photo (frame 248)
-  const photoOpacity = interpolate(frame, [248, 260], [0, 1], {
-    extrapolateLeft: "clamp", extrapolateRight: "clamp",
-  });
-  const photoSlide = spring({
-    frame: frame - 248,
     fps,
     config: { stiffness: 200, damping: 22 },
     from: -50,
@@ -193,206 +173,132 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, photoFolder, productPh
             </div>
             <div style={{ fontSize: notifFontSize, color: "#111111", fontWeight: 500, lineHeight: 1.4 }}>
               Your POS data shows {lowStockItem} is {salesTrend}. You have 2 days of stock left. Reorder now?
+              {morphProgress > 0.5 && (
+                <div style={{ marginTop: 12, fontSize: 16, lineHeight: 1.7, color: "#444444" }}>
+                  📊 This week<br />
+                  • Sales: {salesTrend}<br />
+                  • Stock left: ~2 days<br />
+                  • Normal reorder window: 5 days<br />
+                  • Running 3 days behind
+                </div>
+              )}
             </div>
           </div>
 
-          {/* Chat scroll container */}
+          {/* "Yes pls" reply */}
           <div style={{
             position: "absolute",
-            left: 60, right: 60,
-            top: 80,
-            transform: `translateY(${-scrollY}px)`,
+            right: 60,
+            top: 400,
+            opacity: replyOpacity,
+            transform: `translateX(${replySlide}px)`,
           }}>
-
-            {/* AI avatar + name */}
             <div style={{
-              display: "flex", alignItems: "center", gap: 12,
-              marginTop: 320, marginBottom: 8,
-            }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: "50%",
-                backgroundColor: "#111111",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 18, color: "#ffffff", flexShrink: 0,
-              }}>✦</div>
-              <div style={{ fontSize: 13, color: "#888888", fontWeight: 500 }}>
-                {shopName.toUpperCase()} AI
-              </div>
-            </div>
+              backgroundColor: "#007AFF",
+              color: "#ffffff",
+              fontSize: 22, fontWeight: 500,
+              padding: "14px 20px",
+              borderRadius: "22px 22px 4px 22px",
+            }}>Yes pls</div>
+          </div>
 
-            {/* AI first bubble — notification text repeated as chat */}
+          {/* Typing indicator */}
+          <div style={{
+            position: "absolute",
+            left: 60, top: 470,
+            opacity: typingOpacity,
+          }}>
             <div style={{
               backgroundColor: "#f2f2f7",
-              borderRadius: "18px 18px 18px 4px",
-              padding: "10px 14px",
-              fontSize: 20,
-              color: "#111111",
-              maxWidth: 600,
-              lineHeight: 1.4,
-              marginBottom: 16,
+              borderRadius: "22px 22px 22px 4px",
+              padding: "16px 20px",
+              display: "flex", gap: 6, alignItems: "center", width: 72,
             }}>
-              Your POS data shows {lowStockItem} is {salesTrend}. You have 2 days of stock left. Reorder now?
+              {[0, 1, 2].map(d => (
+                <div key={d} style={{
+                  width: 8, height: 8, borderRadius: "50%",
+                  backgroundColor: "#888888",
+                  transform: `translateY(${dotAnim(d)}px)`,
+                }} />
+              ))}
             </div>
-
-            {/* "Yes pls" reply */}
-            <div style={{
-              opacity: replyOpacity,
-              transform: `translateY(${replySlide}px)`,
-              display: "flex", justifyContent: "flex-end",
-              marginBottom: 16,
-            }}>
-              <div style={{
-                backgroundColor: "#007AFF",
-                borderRadius: "18px 18px 4px 18px",
-                padding: "10px 14px",
-                fontSize: 20, color: "#ffffff",
-                maxWidth: 420,
-              }}>
-                Yes pls
-              </div>
-            </div>
-
-            {/* Typing indicator */}
-            <div style={{
-              opacity: typingOpacity,
-              display: "flex", alignItems: "center", gap: 12,
-              marginBottom: 16,
-            }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: "50%",
-                backgroundColor: "#111111",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 18, color: "#ffffff", flexShrink: 0,
-              }}>✦</div>
-              <div style={{
-                backgroundColor: "#1c1c1e",
-                borderRadius: "18px 18px 18px 4px",
-                padding: "12px 18px",
-                display: "flex", gap: 6, alignItems: "center",
-              }}>
-                {[0, 1, 2].map(d => (
-                  <div key={d} style={{
-                    width: 8, height: 8, borderRadius: "50%",
-                    backgroundColor: "#ffffff",
-                    transform: `translateY(${dotAnim(d)}px)`,
-                  }} />
-                ))}
-              </div>
-            </div>
-
-            {/* Response bubble — reorder suggestion */}
-            <div style={{
-              opacity: responseOpacity,
-              transform: `translateY(${responseSlide}px)`,
-              display: "flex", alignItems: "flex-start", gap: 12,
-              marginBottom: 16,
-            }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: "50%",
-                backgroundColor: "#111111",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 18, color: "#ffffff", flexShrink: 0,
-              }}>✦</div>
-              <div style={{
-                backgroundColor: "#f2f2f7",
-                borderRadius: "18px 18px 18px 4px",
-                padding: "10px 14px",
-                fontSize: 20, color: "#111111",
-                maxWidth: 560, lineHeight: 1.5,
-              }}>
-                Based on your current sell-through rate, I'd recommend ordering {reorderItem}. Want me to place the order?
-              </div>
-            </div>
-
-            {/* "Place order" reply */}
-            <div style={{
-              opacity: orderOpacity,
-              transform: `translateY(${orderSlide}px)`,
-              display: "flex", justifyContent: "flex-end",
-              marginBottom: 16,
-            }}>
-              <div style={{
-                backgroundColor: "#007AFF",
-                borderRadius: "18px 18px 4px 18px",
-                padding: "10px 14px",
-                fontSize: 20, color: "#ffffff",
-                maxWidth: 420,
-              }}>
-                Place the order
-              </div>
-            </div>
-
-            {/* Typing before confirm */}
-            <div style={{
-              opacity: confirmTypingOpacity,
-              display: "flex", alignItems: "center", gap: 12,
-              marginBottom: 16,
-            }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: "50%",
-                backgroundColor: "#111111",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 18, color: "#ffffff", flexShrink: 0,
-              }}>✦</div>
-              <div style={{
-                backgroundColor: "#1c1c1e",
-                borderRadius: "18px 18px 18px 4px",
-                padding: "12px 18px",
-                display: "flex", gap: 6, alignItems: "center",
-              }}>
-                {[0, 1, 2].map(d => (
-                  <div key={d} style={{
-                    width: 8, height: 8, borderRadius: "50%",
-                    backgroundColor: "#ffffff",
-                    transform: `translateY(${dotAnim(d)}px)`,
-                  }} />
-                ))}
-              </div>
-            </div>
-
-            {/* Confirm bubble */}
-            <div style={{
-              opacity: confirmOpacity,
-              transform: `translateY(${confirmSlide}px)`,
-              display: "flex", alignItems: "flex-start", gap: 12,
-              marginBottom: 16,
-            }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: "50%",
-                backgroundColor: "#111111",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                fontSize: 18, color: "#ffffff", flexShrink: 0,
-              }}>✦</div>
-              <div style={{
-                backgroundColor: "#f2f2f7",
-                borderRadius: "18px 18px 18px 4px",
-                padding: "10px 14px",
-                fontSize: 20, color: "#111111",
-                maxWidth: 560, lineHeight: 1.5,
-              }}>
-                Done. {reorderItem} order placed — delivery scheduled for tomorrow morning. Your POS will update automatically when it arrives.
-              </div>
-            </div>
-
-            {/* Product photo */}
-            <div style={{
-              opacity: photoOpacity,
-              transform: `translateY(${photoSlide}px)`,
-              display: "flex", alignItems: "flex-start", gap: 12,
-              marginBottom: 16,
-              marginLeft: 48,
-            }}>
-              <Img
-                src={staticFile(`${photoFolder}/${productPhoto}`)}
-                style={{
-                  width: 320, height: 320,
-                  borderRadius: 16,
-                  objectFit: "cover",
-                }}
-              />
-            </div>
-
           </div>
+
+          {/* Response bubble */}
+          <div style={{
+            position: "absolute",
+            left: 60, top: 470,
+            opacity: responseOpacity,
+            transform: `translateX(${responseSlide}px)`,
+            width: 780,
+          }}>
+            <div style={{
+              backgroundColor: "#f2f2f7",
+              borderRadius: "22px 22px 22px 4px",
+              padding: "22px 26px",
+            }}>
+              <div style={{ fontSize: 20, color: "#111111", lineHeight: 1.6 }}>
+                Based on your sell-through rate, I'd recommend ordering {reorderItem}. Want me to place the order?
+              </div>
+            </div>
+          </div>
+
+          {/* "Place the order" reply */}
+          <div style={{
+            position: "absolute",
+            right: 60, top: 680,
+            opacity: orderOpacity,
+            transform: `translateX(${orderSlide}px)`,
+          }}>
+            <div style={{
+              backgroundColor: "#007AFF",
+              color: "#ffffff",
+              fontSize: 22, fontWeight: 500,
+              padding: "14px 20px",
+              borderRadius: "22px 22px 4px 22px",
+            }}>Place the order</div>
+          </div>
+
+          {/* Typing before confirm */}
+          <div style={{
+            position: "absolute",
+            left: 60, top: 756,
+            opacity: confirmTypingOpacity,
+          }}>
+            <div style={{
+              backgroundColor: "#f2f2f7",
+              borderRadius: "22px 22px 22px 4px",
+              padding: "16px 20px",
+              display: "flex", gap: 6, alignItems: "center", width: 72,
+            }}>
+              {[0, 1, 2].map(d => (
+                <div key={d} style={{
+                  width: 8, height: 8, borderRadius: "50%",
+                  backgroundColor: "#888888",
+                  transform: `translateY(${dotAnim(d)}px)`,
+                }} />
+              ))}
+            </div>
+          </div>
+
+          {/* Confirm bubble */}
+          <div style={{
+            position: "absolute",
+            left: 60, top: 756,
+            opacity: confirmOpacity,
+            transform: `translateX(${confirmSlide}px)`,
+            maxWidth: 780,
+          }}>
+            <div style={{
+              backgroundColor: "#f2f2f7",
+              borderRadius: "22px 22px 22px 4px",
+              padding: "16px 22px",
+              fontSize: 20, color: "#111111", lineHeight: 1.5,
+            }}>
+              Done. {reorderItem} order placed — delivery tomorrow morning. Mark it received when it arrives and your stock levels will update.
+            </div>
+          </div>
+
         </div>
       </div>
     </AbsoluteFill>
