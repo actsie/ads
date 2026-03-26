@@ -13,7 +13,7 @@ import {
 
 const FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
 
-export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, productPhoto, suggestedSpecial, draftPostCaption }) => {
+export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, productPhoto, suggestedSpecial, draftPostCaption, perishableAlert }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -209,7 +209,7 @@ export const SimonesScene3: React.FC<SimonesProps> = ({ shopName, photoFolder, p
             lineHeight: 1.4,
             letterSpacing: "-0.01em",
           }}>
-            1 carton of heavy cream expires in 5 days. Suggest a special to move it?
+            {perishableAlert}
           </div>
         </div>
 

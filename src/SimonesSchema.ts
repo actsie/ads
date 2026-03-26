@@ -7,6 +7,7 @@ export const simonesSchema = z.object({
   productPhoto: z.string(),
   suggestedSpecial: z.string(),
   draftPostCaption: z.string(),
+  perishableAlert: z.string(),
 });
 
 export type SimonesProps = z.infer<typeof simonesSchema>;

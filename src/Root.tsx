@@ -161,6 +161,7 @@ export const RemotionRoot: React.FC = () => {
           productPhoto: "ahi.jpg",
           suggestedSpecial: "Poke Bowl",
           draftPostCaption: "Fresh ahi, clean ponzu, sticky rice 🐟 The Poke Bowl is today's special — made with fish that just came in. Get it while it's fresh.",
+          perishableAlert: "Fresh ahi tuna expires in 2 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -185,6 +186,7 @@ export const RemotionRoot: React.FC = () => {
           productPhoto: "cafeaulait.png",
           suggestedSpecial: "Café au Lait",
           draftPostCaption: "Simple done right ☕ Café au Lait is today's special — bold espresso, steamed milk, nothing extra. Just the way it should be.",
+          perishableAlert: "1 carton of heavy cream expires in 4 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -209,6 +211,7 @@ export const RemotionRoot: React.FC = () => {
           productPhoto: "HorchataColdBrew.jpg",
           suggestedSpecial: "Horchata Cold Brew",
           draftPostCaption: "Cool, creamy, and a little nostalgic ☕🤍 Horchata Cold Brew is today's special — the kind of sip that just feels like home. Come get yours.",
+          perishableAlert: "1 carton of heavy cream expires in 3 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -231,6 +234,7 @@ export const RemotionRoot: React.FC = () => {
           productPhoto: "pumpkinspicelatte.jpg",
           suggestedSpecial: "Pumpkin Spice Latté",
           draftPostCaption: "Something wicked this way brews 🎃🧙 Pumpkin Spice Latté and a Tequila Based Cocktail — pick your potion. Come in before they disappear.",
+          perishableAlert: "1 carton of fresh cream expires in 3 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -252,6 +256,7 @@ export const RemotionRoot: React.FC = () => {
           productPhoto: "spicedorangelatte.png",
           suggestedSpecial: "Spiced Orange Latte",
           draftPostCaption: "Spice up your day ☕🍊 Our Spiced Orange Latte is warm, bright, and just the right kind of bold. Come get yours.",
+          perishableAlert: "1 carton of heavy cream expires in 4 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -276,6 +281,7 @@ export const RemotionRoot: React.FC = () => {
           productPhoto: "gengerchaichill.jpg",
           suggestedSpecial: "Ginger Chai Chill",
           draftPostCaption: "A creamy, icy chai frappe blended with bold ginger for a perfectly spiced, refreshing sip.",
+          perishableAlert: "Fresh ginger expires in 3 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -301,6 +307,7 @@ export const RemotionRoot: React.FC = () => {
           productPhoto: "coldbrew.jpg",
           suggestedSpecial: "Vanilla Creme Cold Brew",
           draftPostCaption: "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
+          perishableAlert: "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -326,6 +333,7 @@ export const RemotionRoot: React.FC = () => {
           productPhoto: "coldbrew.jpg",
           suggestedSpecial: "Vanilla Creme Cold Brew",
           draftPostCaption: "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
+          perishableAlert: "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -343,6 +351,7 @@ export const RemotionRoot: React.FC = () => {
           productPhoto: "coldbrew.jpg",
           suggestedSpecial: "Vanilla Creme Cold Brew",
           draftPostCaption: "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
+          perishableAlert: "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -360,6 +369,7 @@ export const RemotionRoot: React.FC = () => {
           productPhoto: "coldbrew.jpg",
           suggestedSpecial: "Vanilla Creme Cold Brew",
           draftPostCaption: "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
+          perishableAlert: "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
         }}
       />
       <Composition
@@ -377,6 +387,7 @@ export const RemotionRoot: React.FC = () => {
           productPhoto: "coldbrew.jpg",
           suggestedSpecial: "Vanilla Creme Cold Brew",
           draftPostCaption: "Your Monday just got creamier ☕ Vanilla Creme Cold Brew is today's special — rich, smooth, and made to move. Come get yours before it's gone.",
+          perishableAlert: "1 carton of heavy cream expires in 5 days. Suggest a special to move it?",
         }}
       />
     </>
