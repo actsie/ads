@@ -1,4 +1,4 @@
-import { useCurrentFrame, spring, interpolate } from "remotion";
+import { useCurrentFrame, spring, interpolate, staticFile, Img } from "remotion";
 import React from "react";
 
 const FPS = 30;
@@ -138,7 +138,7 @@ const NotificationCard: React.FC<{
     >
       {/* Fountain of Scale avatar */}
       <img
-        src={require("/Users/stacyenot/Desktop/my-video/public/bubble-popped.png")}
+        src={staticFile("bubble-popped.png")}
         alt="Fountain of Scale"
         style={{
           width: 36,
