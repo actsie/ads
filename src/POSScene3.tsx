@@ -11,7 +11,7 @@ import {
 
 const FONT = '-apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif';
 
-export const POSScene3: React.FC<POSProps> = ({ shopName, lowStockItem, salesTrend, reorderItem }) => {
+export const POSScene3: React.FC<POSProps> = ({ shopName, lowStockItem, salesTrend, reorderItem, supplierName, supplierPhone }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
@@ -65,12 +65,12 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, lowStockItem, salesTre
     to: 0,
   });
 
-  // Typing indicator (frames 115–138)
-  const typingOpacity = interpolate(frame, [115, 122, 132, 138], [0, 1, 1, 0], {
+  // Typing indicator 1 (frames 115–138)
+  const typing1Opacity = interpolate(frame, [115, 122, 132, 138], [0, 1, 1, 0], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
 
-  // Response bubble (frames 138–158)
+  // Response bubble (frames 138–155)
   const responseOpacity = interpolate(frame, [138, 150], [0, 1], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
@@ -82,45 +82,80 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, lowStockItem, salesTre
     to: 0,
   });
 
-  // "Place the order" reply (frame 183)
-  const orderOpacity = interpolate(frame, [183, 193], [0, 1], {
+  // "Yes" reply (frames 178–188)
+  const yesOpacity = interpolate(frame, [178, 188], [0, 1], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
-  const orderSlide = spring({
-    frame: frame - 183,
+  const yesSlide = spring({
+    frame: frame - 178,
     fps,
     config: { stiffness: 260, damping: 22 },
     from: 60,
     to: 0,
   });
 
-  // Typing before confirm (frames 196–218)
-  const confirmTypingOpacity = interpolate(frame, [196, 202, 218, 223], [0, 1, 1, 0], {
+  // Typing indicator 2 (frames 200–222)
+  const typing2Opacity = interpolate(frame, [200, 207, 216, 222], [0, 1, 1, 0], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
 
-  // Confirm bubble (frame 223)
-  const confirmOpacity = interpolate(frame, [223, 233], [0, 1], {
+  // Draft order bubble (frames 222–240)
+  const draftOpacity = interpolate(frame, [222, 235], [0, 1], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
-  const confirmSlide = spring({
-    frame: frame - 223,
+  const draftSlide = spring({
+    frame: frame - 222,
     fps,
     config: { stiffness: 200, damping: 22 },
     from: -50,
     to: 0,
   });
 
+  // "Send it" reply (frames 268–278)
+  const sendOpacity = interpolate(frame, [268, 278], [0, 1], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  });
+  const sendSlide = spring({
+    frame: frame - 268,
+    fps,
+    config: { stiffness: 260, damping: 22 },
+    from: 60,
+    to: 0,
+  });
+
+  // Typing before confirm (frames 288–308)
+  const confirmTypingOpacity = interpolate(frame, [288, 294, 308, 314], [0, 1, 1, 0], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  });
+
+  // Confirm bubble (frames 314–330)
+  const confirmOpacity = interpolate(frame, [314, 326], [0, 1], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+  });
+  const confirmSlide = spring({
+    frame: frame - 314,
+    fps,
+    config: { stiffness: 200, damping: 22 },
+    from: -50,
+    to: 0,
+  });
+
+  // Scroll to reveal draft order and beyond
+  const scrollY = interpolate(frame, [215, 232], [0, 220], {
+    extrapolateLeft: "clamp", extrapolateRight: "clamp",
+    easing: Easing.out(Easing.cubic),
+  });
+
   // iOS app-close
-  const cardScale = interpolate(frame, [318, 330], [1, 0.48], {
+  const cardScale = interpolate(frame, [400, 412], [1, 0.48], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
     easing: Easing.inOut(Easing.cubic),
   });
-  const cardSwipeUp = interpolate(frame, [330, 340], [0, -2400], {
+  const cardSwipeUp = interpolate(frame, [412, 422], [0, -2400], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
     easing: Easing.in(Easing.cubic),
   });
-  const cardBorderRadius = interpolate(frame, [318, 330], [0, 28], {
+  const cardBorderRadius = interpolate(frame, [400, 412], [0, 28], {
     extrapolateLeft: "clamp", extrapolateRight: "clamp",
   });
 
@@ -129,7 +164,6 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, lowStockItem, salesTre
 
   return (
     <AbsoluteFill style={{ backgroundColor: "#ffffff", fontFamily: FONT, overflow: "hidden" }}>
-      {/* iOS app-close wrapper */}
       <div style={{
         position: "absolute", top: 0, left: 0, width: "100%", height: "100%",
         transform: `scale(${cardScale}) translateY(${cardSwipeUp}px)`,
@@ -138,6 +172,7 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, lowStockItem, salesTre
         overflow: "hidden",
       }}>
         <div style={{ width: "100%", height: "100%", backgroundColor: "#ffffff" }}>
+        <div style={{ width: "100%", height: "100%", transform: `translateY(${-scrollY}px)` }}>
 
           {/* Notification / morphing bubble */}
           <div style={{
@@ -153,7 +188,6 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, lowStockItem, salesTre
             opacity: notifOpacity,
             transformOrigin: "top center",
           }}>
-            {/* iOS notification header */}
             <div style={{
               display: "flex", alignItems: "center", gap: 10,
               marginBottom: headerHeight > 0 ? 8 : 0,
@@ -188,36 +222,27 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, lowStockItem, salesTre
           {/* "Yes pls" reply */}
           <div style={{
             position: "absolute",
-            right: 60,
-            top: 400,
+            right: 60, top: 400,
             opacity: replyOpacity,
             transform: `translateX(${replySlide}px)`,
           }}>
             <div style={{
-              backgroundColor: "#007AFF",
-              color: "#ffffff",
+              backgroundColor: "#007AFF", color: "#ffffff",
               fontSize: 22, fontWeight: 500,
               padding: "14px 20px",
               borderRadius: "22px 22px 4px 22px",
             }}>Yes pls</div>
           </div>
 
-          {/* Typing indicator */}
-          <div style={{
-            position: "absolute",
-            left: 60, top: 470,
-            opacity: typingOpacity,
-          }}>
+          {/* Typing 1 */}
+          <div style={{ position: "absolute", left: 60, top: 470, opacity: typing1Opacity }}>
             <div style={{
-              backgroundColor: "#f2f2f7",
-              borderRadius: "22px 22px 22px 4px",
-              padding: "16px 20px",
-              display: "flex", gap: 6, alignItems: "center", width: 72,
+              backgroundColor: "#f2f2f7", borderRadius: "22px 22px 22px 4px",
+              padding: "16px 20px", display: "flex", gap: 6, alignItems: "center", width: 72,
             }}>
               {[0, 1, 2].map(d => (
                 <div key={d} style={{
-                  width: 8, height: 8, borderRadius: "50%",
-                  backgroundColor: "#888888",
+                  width: 8, height: 8, borderRadius: "50%", backgroundColor: "#888888",
                   transform: `translateY(${dotAnim(d)}px)`,
                 }} />
               ))}
@@ -226,55 +251,91 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, lowStockItem, salesTre
 
           {/* Response bubble */}
           <div style={{
-            position: "absolute",
-            left: 60, top: 470,
+            position: "absolute", left: 60, top: 470,
             opacity: responseOpacity,
             transform: `translateX(${responseSlide}px)`,
             width: 780,
           }}>
-            <div style={{
-              backgroundColor: "#f2f2f7",
-              borderRadius: "22px 22px 22px 4px",
-              padding: "22px 26px",
-            }}>
+            <div style={{ backgroundColor: "#f2f2f7", borderRadius: "22px 22px 22px 4px", padding: "22px 26px" }}>
               <div style={{ fontSize: 20, color: "#111111", lineHeight: 1.6 }}>
-                Based on your sell-through rate, I'd recommend ordering {reorderItem}. Want me to place the order?
+                Based on your sell-through rate, I'd recommend ordering {reorderItem}. Want me to draft the order?
               </div>
             </div>
           </div>
 
-          {/* "Place the order" reply */}
+          {/* "Yes" reply */}
           <div style={{
             position: "absolute",
-            right: 60, top: 680,
-            opacity: orderOpacity,
-            transform: `translateX(${orderSlide}px)`,
+            right: 60, top: 620,
+            opacity: yesOpacity,
+            transform: `translateX(${yesSlide}px)`,
           }}>
             <div style={{
-              backgroundColor: "#007AFF",
-              color: "#ffffff",
+              backgroundColor: "#007AFF", color: "#ffffff",
               fontSize: 22, fontWeight: 500,
               padding: "14px 20px",
               borderRadius: "22px 22px 4px 22px",
-            }}>Place the order</div>
+            }}>Yes</div>
           </div>
 
-          {/* Typing before confirm */}
-          <div style={{
-            position: "absolute",
-            left: 60, top: 756,
-            opacity: confirmTypingOpacity,
-          }}>
+          {/* Typing 2 */}
+          <div style={{ position: "absolute", left: 60, top: 690, opacity: typing2Opacity }}>
             <div style={{
-              backgroundColor: "#f2f2f7",
-              borderRadius: "22px 22px 22px 4px",
-              padding: "16px 20px",
-              display: "flex", gap: 6, alignItems: "center", width: 72,
+              backgroundColor: "#f2f2f7", borderRadius: "22px 22px 22px 4px",
+              padding: "16px 20px", display: "flex", gap: 6, alignItems: "center", width: 72,
             }}>
               {[0, 1, 2].map(d => (
                 <div key={d} style={{
-                  width: 8, height: 8, borderRadius: "50%",
-                  backgroundColor: "#888888",
+                  width: 8, height: 8, borderRadius: "50%", backgroundColor: "#888888",
+                  transform: `translateY(${dotAnim(d)}px)`,
+                }} />
+              ))}
+            </div>
+          </div>
+
+          {/* Draft order bubble */}
+          <div style={{
+            position: "absolute", left: 60, top: 690,
+            opacity: draftOpacity,
+            transform: `translateX(${draftSlide}px)`,
+            width: 780,
+          }}>
+            <div style={{ backgroundColor: "#f2f2f7", borderRadius: "22px 22px 22px 4px", padding: "22px 26px" }}>
+              <div style={{ fontSize: 20, color: "#111111", lineHeight: 1.6 }}>
+                Draft order ready:<br /><br />
+                <span style={{ fontWeight: 600 }}>{supplierName} · {supplierPhone}</span><br /><br />
+                <span style={{ fontStyle: "italic", color: "#444444" }}>
+                  "Hi, this is {shopName}. Can we get {reorderItem} delivered tomorrow? Thanks"
+                </span><br /><br />
+                Follow-up scheduled in 2hrs if no reply.
+              </div>
+            </div>
+          </div>
+
+          {/* "Send it" reply */}
+          <div style={{
+            position: "absolute",
+            right: 60, top: 1010,
+            opacity: sendOpacity,
+            transform: `translateX(${sendSlide}px)`,
+          }}>
+            <div style={{
+              backgroundColor: "#007AFF", color: "#ffffff",
+              fontSize: 22, fontWeight: 500,
+              padding: "14px 20px",
+              borderRadius: "22px 22px 4px 22px",
+            }}>Send it</div>
+          </div>
+
+          {/* Typing before confirm */}
+          <div style={{ position: "absolute", left: 60, top: 1080, opacity: confirmTypingOpacity }}>
+            <div style={{
+              backgroundColor: "#f2f2f7", borderRadius: "22px 22px 22px 4px",
+              padding: "16px 20px", display: "flex", gap: 6, alignItems: "center", width: 72,
+            }}>
+              {[0, 1, 2].map(d => (
+                <div key={d} style={{
+                  width: 8, height: 8, borderRadius: "50%", backgroundColor: "#888888",
                   transform: `translateY(${dotAnim(d)}px)`,
                 }} />
               ))}
@@ -283,22 +344,21 @@ export const POSScene3: React.FC<POSProps> = ({ shopName, lowStockItem, salesTre
 
           {/* Confirm bubble */}
           <div style={{
-            position: "absolute",
-            left: 60, top: 756,
+            position: "absolute", left: 60, top: 1080,
             opacity: confirmOpacity,
             transform: `translateX(${confirmSlide}px)`,
             maxWidth: 780,
           }}>
             <div style={{
-              backgroundColor: "#f2f2f7",
-              borderRadius: "22px 22px 22px 4px",
+              backgroundColor: "#f2f2f7", borderRadius: "22px 22px 22px 4px",
               padding: "16px 22px",
               fontSize: 20, color: "#111111", lineHeight: 1.5,
             }}>
-              Done. {reorderItem} order placed — delivery tomorrow morning. Mark it received when it arrives and your stock levels will update.
+              Sent. Following up in 2hrs if no confirmation.
             </div>
           </div>
 
+        </div>
         </div>
       </div>
     </AbsoluteFill>

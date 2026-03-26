@@ -114,6 +114,31 @@ export const RemotionRoot: React.FC = () => {
         }}
       />
       <Composition
+        id="CafeVidaVideo"
+        component={SimonesVideo}
+        durationInFrames={SIMONES_TOTAL_FRAMES}
+        fps={30}
+        width={1080}
+        height={1080}
+        schema={simonesSchema}
+        defaultProps={{
+          shopName: "Cafe Vida",
+          photoFolder: "CAFEVIDA",
+          photos: [
+            "29.png",
+            "30.png",
+            "31.png",
+            "32.png",
+            "33.png",
+            "34.png",
+          ],
+          productPhoto: "29.png",
+          suggestedSpecial: "Banana Berries Juice",
+          draftPostCaption: "Sweet, fresh, and blended just right. 🍌🍓 Banana Berries Juice is today's special — come get yours.",
+          perishableAlert: "Fresh bananas expire in 2 days. Suggest a special to move it?",
+        }}
+      />
+      <Composition
         id="CafeNidoVideo"
         component={SimonesVideo}
         durationInFrames={SIMONES_TOTAL_FRAMES}
@@ -275,6 +300,8 @@ export const RemotionRoot: React.FC = () => {
           lowStockItem: "albacore tuna",
           salesTrend: "up 40% this week",
           reorderItem: "Line-Caught Albacore Tuna — 2kg",
+          supplierName: "Coastal Catch Co.",
+          supplierPhone: "+1 (555) 078-9012",
         }}
       />
       <Composition
@@ -301,6 +328,8 @@ export const RemotionRoot: React.FC = () => {
           lowStockItem: "cold brew concentrate",
           salesTrend: "up 40% this week",
           reorderItem: "Cold Brew Concentrate — 2 x 5L bags",
+          supplierName: "Pacific Coast Roasters",
+          supplierPhone: "+1 (555) 012-3456",
         }}
       />
       <Composition
@@ -325,6 +354,8 @@ export const RemotionRoot: React.FC = () => {
           lowStockItem: "fresh ahi tuna",
           salesTrend: "up 40% this week",
           reorderItem: "Fresh Ahi Tuna — 2kg",
+          supplierName: "Island Fresh Seafood",
+          supplierPhone: "+1 (555) 034-5678",
         }}
       />
       <Composition
@@ -350,6 +381,8 @@ export const RemotionRoot: React.FC = () => {
           lowStockItem: "heavy cream",
           salesTrend: "up 40% this week",
           reorderItem: "Heavy Cream — 2 x 1L cartons",
+          supplierName: "Valley Dairy Co.",
+          supplierPhone: "+1 (555) 056-7890",
         }}
       />
 

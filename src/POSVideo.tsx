@@ -8,7 +8,7 @@ import { POSScene4 } from "./POSScene4";
 
 const S1 = 120;
 const S2 = 202;
-const S3 = 347;
+const S3 = 430;
 const S4 = 160;
 
 export const POS_TOTAL_FRAMES = S1 + S2 + S3 + S4;
