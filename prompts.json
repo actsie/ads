@@ -1,0 +1,192 @@
+{
+  "version": "1.0",
+  "updated": "2026-03-27",
+  "description": "Structured prompt library for the AI CMO orchestrator. Query by type, tags, or use_case to find the right technique or template.",
+  "prompts": [
+    {
+      "id": "nopos-video",
+      "name": "NoPOS Video Template",
+      "type": "video_template",
+      "tags": ["video", "restaurant", "cafe", "nopos", "social post", "perishable", "instagram", "special", "no pos system"],
+      "use_case": "Create a short-form video for a restaurant or cafe that does NOT have a POS system. Shows: perishable alert → AI suggests a special → draft Instagram post.",
+      "composition_id_pattern": "[ShopName]Video",
+      "remotion_component": "SimonesVideo",
+      "scene_structure": {
+        "scene1": "120 frames — card fan → stack back → flip → 'The work never stops. Some of it should.'",
+        "scene2": "202 frames — pain wheel (7 items), arrow stops at index 4, bridge line slides in",
+        "scene3": "347 frames — iOS notification morph → chat → suggested special → confirm → photo → draft post",
+        "scene4": "160 frames — '{shopName} was top of mind when we started this.' + 'Reply yes if you're interested.'"
+      },
+      "inputs": {
+        "shopName": "Name of the shop",
+        "photoFolder": "Folder in /public/ containing shop photos",
+        "photos": "Array of 5-7 photo filenames for the card fan in Scene 1",
+        "productPhoto": "Photo shown in chat Scene 3",
+        "suggestedSpecial": "Name of the suggested special (e.g. 'Vanilla Creme Cold Brew')",
+        "draftPostCaption": "Draft Instagram caption for the special",
+        "perishableAlert": "Must name the KEY INGREDIENT the suggested special uses (e.g. '1 carton of heavy cream expires in 5 days. Suggest a special to move it?')"
+      },
+      "rules": ["perishableAlert must name the ingredient that the suggested special uses — not a generic item"],
+      "prompt": "Add a new NoPOS shop composition. Fill in:\n- Shop name: [shopName]\n- Template: NoPOS (SimonesVideo)\n- Photo folder: /public/[SHOPNAME]\n- Photos (5–7 filenames for the fan in Scene 1): [photos]\n- Product photo (shown in chat Scene 3): [productPhoto]\n- Suggested special name: [suggestedSpecial]\n- Draft Instagram caption: [draftPostCaption]\n- Perishable alert (key ingredient that's expiring → ties to the special): [perishableAlert]"
+    },
+    {
+      "id": "pos-video",
+      "name": "POS Video Template",
+      "type": "video_template",
+      "tags": ["video", "restaurant", "cafe", "pos", "inventory", "supplier", "reorder", "stock", "toast", "square", "lightspeed"],
+      "use_case": "Create a short-form video for a restaurant or cafe that HAS a POS system (Toast, Square, Lightspeed). Shows: AI reads POS data → spots low stock → drafts supplier order via SMS.",
+      "composition_id_pattern": "[ShopName]Video",
+      "remotion_component": "POSVideo",
+      "scene_structure": {
+        "scene1": "120 frames — same card fan as NoPOS",
+        "scene2": "202 frames — pain wheel with POS-specific items",
+        "scene3": "430 frames — notification morph + stock breakdown → chat → draft supplier order → send → 'Sent. Following up in 2hrs if no confirmation.'",
+        "scene4": "160 frames — '{shopName} was top of mind...' + 'Free setup. No obligations.'"
+      },
+      "inputs": {
+        "shopName": "Name of the shop",
+        "photoFolder": "Folder in /public/ containing shop photos",
+        "photos": "Array of 5-7 photo filenames for the card fan",
+        "productPhoto": "Photo of the low stock product",
+        "lowStockItem": "Item that is running low (e.g. 'cold brew concentrate')",
+        "salesTrend": "Sales trend for that item (e.g. 'up 40% this week')",
+        "reorderItem": "Full reorder description (e.g. 'Cold Brew Concentrate — 2 x 5L bags')",
+        "supplierName": "Supplier name (e.g. 'Pacific Coast Roasters')",
+        "supplierPhone": "Supplier phone number (e.g. '+1 (555) 012-3456')"
+      },
+      "prompt": "Add a new POS shop composition. Fill in:\n- Shop name: [shopName]\n- Template: POS (POSVideo)\n- Photo folder: /public/[SHOPNAME]\n- Photos (5–7 filenames): [photos]\n- Product photo: [productPhoto]\n- Low stock item: [lowStockItem]\n- Sales trend: [salesTrend]\n- Reorder item: [reorderItem]\n- Supplier name: [supplierName]\n- Supplier phone: [supplierPhone]"
+    },
+    {
+      "id": "real-estate-video",
+      "name": "Real Estate Short-Form Video",
+      "type": "video_template",
+      "tags": ["video", "real estate", "property", "luxury", "tiktok", "reels", "shorts", "9:16", "vertical"],
+      "use_case": "Create a 15–30 second premium real estate video for TikTok/Reels/Shorts. Pre-trim raw footage with FFmpeg first, then Remotion adds motion graphics on top.",
+      "format": "1080x1920 (9:16 vertical)",
+      "pipeline": ["1. Pre-trim clips with FFmpeg: ffmpeg -i [input.mp4] -ss [start] -to [end] -c copy [clip.mp4]", "2. Put clips in /public/[PROPERTYNAME]/", "3. Build Remotion composition with motion graphics"],
+      "inputs": {
+        "propertyName": "Name or address of the property",
+        "clips": "Pre-trimmed clip filenames in order (each 1–3 seconds)",
+        "price": "Property price",
+        "location": "Location / neighborhood",
+        "specs": "Bedrooms / Bathrooms / Sqft",
+        "tagline": "e.g. 'Luxury Living in [City]'",
+        "cta": "e.g. 'Book a private tour today'",
+        "colorPalette": "Black + Gold OR White + Navy",
+        "musicFile": "Background music filename in /public/"
+      },
+      "motion_graphics": ["Hook text in first 2 seconds (bold headline, mask reveal)", "Property price reveal (counts up or slides in)", "Location lower-third with animated pin", "Bedroom/Bath/Sqft icon counters", "Just Listed / Luxury Living animated title", "Corner bracket overlays (SVG or roughjs)", "Speed ramp on best visual moment", "CTA at end with fade + slide"],
+      "prompt": "Build a real estate short-form video composition in Remotion. Use system fonts only. Format: 1080x1920.\n\nProperty: [propertyName]\nClips: [clips]\nPrice: [price]\nLocation: [location]\nSpecs: [specs]\nTagline: [tagline]\nCTA: [cta]\nColor palette: [colorPalette]\nMusic: [musicFile]\n\nInclude: hook text (first 2s), price reveal, location lower-third, spec counters, corner brackets, speed ramp, CTA."
+    },
+    {
+      "id": "article-highlight",
+      "name": "Article Highlight Composition",
+      "type": "composition",
+      "tags": ["article", "screenshot", "highlight", "roughjs", "zoom", "blur", "3d", "text", "marker", "annotate"],
+      "use_case": "Zoom into a screenshot of an article or tweet and highlight specific words with a hand-drawn marker effect. Includes blur-in, 3D rotation, and left-to-right highlight animation.",
+      "inputs": {
+        "imageName": "Filename of the screenshot in /public/",
+        "wordsToHighlight": "Array of words or phrases to highlight with the marker"
+      },
+      "notes": ["Use tesseract CLI to OCR the image and find text positions: tesseract [image] stdout tsv", "SVG must be on top of image (higher zIndex) — putting it behind hides highlight under white background", "Never use useMemo for roughjs paths — Remotion caches stale values. Use inline computation with frame guards.", "Jitter: seed={Math.floor(frame / 3)} for lively jitter (~10fps)"],
+      "prompt": "Use remotion best practices. Import the following image into the project: [imageName]\n\nUse tesseract CLI to do OCR and find the positions of the text. In Remotion, make a new composition where you load the image and pad the article generously on a black full HD background.\n\nWhile the composition is running for 5 seconds, slowly, very subtly, zoom into it and slightly rotate the article in 3D from left to right. The overall rotation should be around 15 degrees for each axis.\n\nAt the beginning, blur the whole composition and unblur it over 1 second. After the blur is done, evolve a highlighter from left to right using rough.js over [wordsToHighlight]. The image has a white background — make sure the marker appears behind the text.\n\nWhen installing new dependencies, check for existing lockfiles and use the right package manager."
+    },
+    {
+      "id": "roughjs-underline",
+      "name": "Rough.js Underline",
+      "type": "annotation",
+      "tags": ["roughjs", "underline", "annotation", "hand-drawn", "text", "emphasis"],
+      "use_case": "Animate a hand-drawn underline appearing left to right under a word or phrase.",
+      "prompt": "Use rough.js generator API (not useEffect — use inline computation with frame guards).\nDraw a gen.line(x1, y1, x2, y2) where x2 = x1 + lineWidth * progress.\nprogress = interpolate(frame, [startFrame, endFrame], [0, 1], { extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }).\nRender as a <path> inside a <svg> positioned absolute over the composition.\nstroke: '[color]', strokeWidth: 2.5, roughness: 1.5, bowing: 1.\nJitter: pass seed={Math.floor(frame / 3)} to keep it stable but slightly alive.\nOnly compute paths when frame >= startFrame — never use useMemo (Remotion caches stale values from thumbnail renders)."
+    },
+    {
+      "id": "roughjs-circle-callout",
+      "name": "Rough.js Circle Callout",
+      "type": "annotation",
+      "tags": ["roughjs", "circle", "callout", "annotation", "hand-drawn", "emphasis", "oval", "highlight"],
+      "use_case": "Animate a hand-drawn oval growing around a word, number, or area to draw attention to it.",
+      "prompt": "Use rough.js generator API.\nDraw gen.ellipse(cx, cy, width * progress, height * progress, options).\nprogress = interpolate(frame, [startFrame, endFrame], [0, 1], { easing: Easing.out(Easing.cubic), extrapolateLeft: 'clamp', extrapolateRight: 'clamp' }).\ncx/cy = center of the word. width/height = bounding box + padding (~20px each side).\nstroke: '[color]', strokeWidth: 2, roughness: 2, fill: 'none'.\nRender as <path> inside absolute <svg>. Only compute when frame >= startFrame.\nJitter: seed={Math.floor(frame / 4)}."
+    },
+    {
+      "id": "roughjs-arrow",
+      "name": "Rough.js Animated Arrow",
+      "type": "annotation",
+      "tags": ["roughjs", "arrow", "annotation", "hand-drawn", "pointer", "callout"],
+      "use_case": "Draw a hand-drawn arrow pointing at something on screen, appearing with a fade-in or draw-on effect.",
+      "prompt": "Use rough.js generator API.\nDraw gen.path('[SVG path string for arrow line + arrowhead]', options).\nFor a simple pointing arrow: 'M [tailX] [tailY] L [tipX] [tipY]' for the shaft, plus a small V shape for the arrowhead.\nAnimate by fading in: opacity = interpolate(frame, [start, start+15], [0, 1]).\nstroke: '[color]', strokeWidth: 2.5, roughness: 1.5.\nOnly compute when frame >= startFrame."
+    },
+    {
+      "id": "roughjs-sketch-border",
+      "name": "Rough.js Sketch Border on Card",
+      "type": "annotation",
+      "tags": ["roughjs", "border", "card", "annotation", "hand-drawn", "frame", "photo"],
+      "use_case": "Animate a hand-drawn border appearing around a card, photo, or UI element.",
+      "prompt": "Use rough.js generator API.\nDraw gen.rectangle(x, y, width, height, options).\nAnimate with opacity: interpolate(frame, [startFrame, startFrame+20], [0, 1]).\nOr animate left-to-right: gen.rectangle(x, y, width * progress, height).\nstroke: '[color]', strokeWidth: 2, roughness: 2.5, fill: 'none'.\nRender as <path> inside absolute <svg> on top of the card (zIndex higher than card).\nOnly compute when frame >= startFrame."
+    },
+    {
+      "id": "roughjs-fill-styles",
+      "name": "Rough.js Fill Styles Reference",
+      "type": "reference",
+      "tags": ["roughjs", "fill", "style", "hachure", "solid", "dots", "zigzag", "reference"],
+      "use_case": "Reference for choosing the right rough.js fill style and opacity for overlays.",
+      "styles": {
+        "solid": "Flat color fill, like a marker. Use for highlights.",
+        "hachure": "Diagonal lines (default). More hand-drawn, energetic.",
+        "cross-hatch": "Grid pattern. Busy, textured.",
+        "zigzag": "Jagged fill. Playful, chaotic.",
+        "dots": "Dotted fill. Soft, subtle.",
+        "dashed": "Dashed lines. Sketchy but light."
+      },
+      "opacity_guide": {
+        "fill_overlay_on_image": "rgba alpha 0.2–0.35 so text shows through",
+        "border_stroke": "0.8–1.0 for visibility"
+      },
+      "jitter_guide": {
+        "N=3": "~10fps — lively, animated feel",
+        "N=6": "~5fps — calm, subtle",
+        "N=12": "~2.5fps — very slow, almost static"
+      }
+    },
+    {
+      "id": "render-mantisclaw",
+      "name": "Render on MantisСlaw",
+      "type": "render",
+      "tags": ["render", "mantisclaw", "mp4", "export", "remotion"],
+      "use_case": "Render a Remotion composition to MP4 on the MantisСlaw remote render machine.",
+      "project_path": "/Users/mantisclaw/.openclaw/workspace/ads/remotion/project",
+      "steps": ["cd /Users/mantisclaw/.openclaw/workspace/ads/remotion/project", "git pull exploration main", "npx remotion render src/index.ts {CompositionId} out/{filename}.mp4"],
+      "compositions": {
+        "SimonesVideo": "NoPOS",
+        "MentalBarVideo": "NoPOS",
+        "TradeCoffeeVideo": "NoPOS",
+        "WitchsCottageVideo": "NoPOS",
+        "WithLoveVideo": "NoPOS",
+        "FrostMeCafeVideo": "NoPOS",
+        "27ClubCoffeeVideo": "NoPOS",
+        "AlchemyCafeVideo": "NoPOS",
+        "CafeCodaChicoVideo": "NoPOS",
+        "CafeDulceVideo": "NoPOS",
+        "CafeNidoVideo": "NoPOS",
+        "CafeVidaVideo": "NoPOS",
+        "POSVideoDemo": "POS",
+        "Camp4Video": "POS",
+        "AnotherCafeVideo": "POS",
+        "FrontsideCafeVideo": "POS"
+      },
+      "notes": ["Always push to both remotes first: git push actsie main && git push exploration main", "MantisСlaw pulls from exploration remote", "Render one composition at a time to avoid memory issues"]
+    },
+    {
+      "id": "position-finding",
+      "name": "Finding Positions for Rough.js Annotations",
+      "type": "reference",
+      "tags": ["position", "coordinates", "ocr", "tesseract", "roughjs", "annotation", "reference"],
+      "use_case": "Reference for finding x/y coordinates when placing rough.js annotations over text or elements.",
+      "methods": {
+        "text_in_image": "Use tesseract CLI: brew install tesseract → tesseract [image] stdout tsv. Returns word positions in pixels.",
+        "react_element_in_remotion": "You already know the position — use the same left/top/fontSize values from your JSX.",
+        "ui_screenshot_approx": "Eyeball the coordinates and tweak in Remotion Studio scrubbing frame by frame.",
+        "exact_rendered_element": "Add useRef, call getBoundingClientRect() in useEffect (Studio preview only — won't work in render), log, then hardcode."
+      }
+    }
+  ]
+}
