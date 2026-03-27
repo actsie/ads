@@ -75,6 +75,19 @@ Project path on MantisСlaw:
 
 ## Advanced Composition Prompts
 
+### How to find positions for rough.js annotations
+
+Depending on what you're annotating, use the right method:
+
+| Situation | Method |
+|-----------|--------|
+| Text is baked into an image (screenshot, photo) | Use **tesseract CLI** to OCR the image and get pixel coordinates. Install: `brew install tesseract`. Run: `tesseract [image] stdout tsv` to get word positions. |
+| Text is a React element you wrote in Remotion | You already know the position — use the same `left`, `top`, `fontSize` values from your JSX. No OCR needed. |
+| UI screenshot with roughly known layout | Eyeball the coordinates and tweak in Remotion Studio scrubbing frame by frame. |
+| Need exact position of a rendered element in Studio | Add a `useRef` to the element, call `getBoundingClientRect()` in a `useEffect` (Studio preview only — won't work in render), log the values, then hardcode them. |
+
+---
+
 ### Article Highlight Composition
 Use when creating a composition that zooms into a screenshot of an article and highlights specific words with a hand-drawn marker effect.
 
