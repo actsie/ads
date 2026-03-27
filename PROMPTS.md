@@ -1,5 +1,54 @@
 # Remotion Video Prompts
 
+## Real Estate Short-Form Video (15–30s)
+
+### Pipeline overview
+Raw footage must be pre-trimmed with FFmpeg before Remotion. Remotion handles all motion graphics and assembly.
+
+**Step 1 — Pre-trim clips with FFmpeg**
+```
+ffmpeg -i [input.mp4] -ss [start] -to [end] -c copy [clip1.mp4]
+```
+Trim each scene to 1–3 seconds. Put clips in `/public/[PROPERTYNAME]/`.
+
+**Step 2 — Build composition in Remotion**
+```
+Fill in the details below and add a <Composition> block to src/Root.tsx:
+
+- Property name:
+- Clips (filenames in order, each 1–3 seconds):
+- Property price:
+- Location / neighborhood:
+- Bedrooms / Bathrooms / Sqft:
+- Tagline (e.g. "Luxury Living in [City]"):
+- CTA (e.g. "Book a private tour today"):
+- Color palette: Black + Gold OR White + Navy
+- Background music file (place in /public/):
+- Format: 1080x1920 (9:16 vertical for TikTok/Reels/Shorts)
+```
+
+**Motion graphics to include per scene:**
+- Hook text in first 2 seconds (bold headline, mask reveal animation)
+- Property price reveal (number counts up or slides in)
+- Location lower-third with animated pin
+- Bedroom / Bath / Sqft icon counters (animate numbers up)
+- "Just Listed" or "Luxury Living" animated title
+- Subtle corner bracket overlays (SVG or roughjs)
+- Speed ramp on the best visual moment (use `<Video playbackRate>` with frame accumulation)
+- CTA at the end with fade + slide
+
+**Typography:**
+- Headline: bold sans-serif, large, tight tracking
+- Subtext: clean minimal sans-serif
+- Animation: smooth fade + slide or mask reveal
+- System fonts only (no Google Fonts — breaks on render machine)
+
+**Audio:**
+- Add `<Audio src={staticFile("[music.mp3]")} />` to the composition
+- Manually note the beat drop timestamp and align the highlight scene to that frame
+
+---
+
 ## Adding a New Shop
 
 ### NoPOS Template (social post / perishable special flow)

@@ -116,6 +116,40 @@ roughjs works with SVG in Remotion. Use a `useRef<SVGSVGElement>` and draw insid
 
 ---
 
+## Remotion Video Editing Capabilities
+
+What Remotion can and can't do when working with raw video footage — important for scoping new video types.
+
+### What Remotion CAN do with video
+- **Trim/cut clips** — `<Video trimBefore={x} trimAfter={y} />` removes sections from start or end
+- **Jump cuts** — skip portions without re-mounting the component
+- **Speed ramping** — change playback rate over time, but requires manual frame accumulation logic (not a one-liner)
+- **Audio-reactive animations** — `@remotion/media-utils` provides `getAudioData()` and `visualizeAudio()` — gives waveform per frame, you can drive animations from audio amplitude
+- **Multiple clips** — combine pre-trimmed clips using `<Sequence>` with offsets
+
+### What Remotion CANNOT do
+- **Scene detection** — no built-in analysis of raw footage
+- **Auto beat detection** — no automatic sync to music beats; you'd need to write peak detection manually or hardcode beat timestamps
+- **LUT / cinematic color grading** — no LUT support; CSS filters only (basic)
+- **Non-linear cuts in the middle of a clip** — trimBefore/trimAfter only cuts from ends
+
+### Real estate video pipeline
+For a high-end real estate short-form video (15–30s), the right pipeline is:
+1. **FFmpeg** — pre-trim the raw footage into 1–3 second clips before Remotion touches it
+2. **Remotion** — assemble clips with `<Sequence>` + `<Video>`, add all motion graphics on top:
+   - Property price reveal animation
+   - Location lower-third
+   - Bedroom/Bath/Sqft animated counters
+   - "Just Listed" / "Luxury Living" title animations
+   - Corner bracket overlays (roughjs or SVG)
+   - Typography animations (fade + slide, mask reveal)
+   - Speed ramp on highlight scene
+3. **Export** — 1080x1920 9:16 for TikTok/Reels/Shorts
+
+The only step outside Remotion is the initial FFmpeg trim. Everything else is buildable.
+
+---
+
 ## MantisСlaw (Remote Render Machine)
 
 MantisСlaw is a separate Mac that renders the videos. It pulls from GitHub and runs Remotion render commands.
